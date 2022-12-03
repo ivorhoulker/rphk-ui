@@ -13,8 +13,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn dev:ui\" \"yarn storybook\"",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "build-storybook": "build-storybook",
-    "chromatic": "npx chromatic --exit-zero-on-changes -d storybook-static/ --project-token=20800910f933"
+    "build-storybook": "build-storybook"
   },
   "files": [
     "dist/**"
