@@ -6,6 +6,7 @@ module.exports = {
     name: '@storybook/react-vite',
     options: {},
   },
+  staticDirs: ['../public'],
   core: {},
   async viteFinal(config) {
     // Merge custom configuration into the default config

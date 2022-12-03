@@ -1,41 +1,36 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '.';
+import { Video } from '.';
 
-export default {
+const meta: Meta<typeof Video> = {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: 'Button',
-  component: Button,
+  title: 'Video',
+  component: Video,
   parameters: {
     layout: 'centered',
   },
   argTypes: {
-    children: {
-      defaultValue: 'Default Text',
+    className: {
+      defaultValue: 'test',
       control: 'text',
     },
-    variant: {
-      options: ['primary', 'secondary'],
-      control: { type: 'radio' },
-    },
-    disabled: {
-      control: 'boolean',
-    },
+    loop: { control: 'boolean', defaultValue: true },
   },
-} as Meta<typeof Button>;
-type Story = StoryObj<typeof Button>;
+};
+export default meta;
+type Story = StoryObj<typeof Video>;
 
 export const Primary: Story = {
   args: {
-    variant: 'primary',
+    className: 'test',
   },
 };
 
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
+    className: 'test',
   },
 };

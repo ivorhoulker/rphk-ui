@@ -1,3 +1,5 @@
-# UI Components for Presence
+# @rphk/ui
 
-Storybook, React, Tailwindcss.
+> UI Components for Presence
+
+Storybook, React, Tailwindcss, Typescript. A submodule in the larger private Presence monorepo.
