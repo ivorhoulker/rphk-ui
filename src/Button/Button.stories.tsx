@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { ComponentStory, ComponentStoryFn, Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '.';
 
@@ -12,8 +12,18 @@ const meta: Meta<typeof Button> = {
   parameters: {
     layout: 'centered',
   },
+  argTypes: {},
 };
 export default meta;
 
-export const Primary = () => <Button variant="primary">Test</Button>;
-export const Secondary = () => <Button variant="secondary">Test</Button>;
+const Template: ComponentStoryFn<typeof Button> = (args) => <Button {...args} />;
+export const Primary = Template.bind({});
+Primary.args = {
+  children: 'Primary',
+  variant: 'primary',
+};
+export const Secondary = Template.bind({});
+Secondary.args = {
+  children: 'Secondary',
+  variant: 'secondary',
+};

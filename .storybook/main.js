@@ -9,7 +9,7 @@ module.exports = {
         },
       },
     },
-    'storybook-tailwind-dark-mode',
+    'storybook-dark-mode',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
@@ -19,4 +19,7 @@ module.exports = {
     builder: '@storybook/builder-webpack5',
   },
   staticDirs: ['../public'],
+  docs: {
+    docsPage: 'automatic',
+  },
 };
