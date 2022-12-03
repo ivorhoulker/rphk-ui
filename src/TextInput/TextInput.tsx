@@ -1,18 +1,16 @@
-import clsx from 'clsx';
 import { ReactNode } from 'react';
+import clsx from 'clsx';
 
 interface Props {
   className?: string;
   children?: ReactNode;
-  ref: React.LegacyRef<HTMLInputElement>;
   id: string;
   placeholder?: string;
 }
-export const TextInput = ({ placeholder, className, id, children, ref, ...rest }: Props) => {
+export const TextInput = ({ placeholder, className, id, children, ...rest }: Props) => {
   return (
     <div className="group relative z-0 mb-6 w-full">
       <input
-        ref={ref}
         {...rest}
         id={id}
         placeholder={placeholder ?? 'placeholder'}

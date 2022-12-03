@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 import { Video } from '../Video';
 interface Props {
-  className?: string;
   children?: ReactNode;
 }
-export const HUD = ({ className, children }: Props) => {
+export const HUD = ({ children }: Props) => {
   return (
     <div className="relative h-full w-full shadow-inner">
       <Video />
