@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const colors = require('tailwindcss/colors');
 const path = require('path');
 
@@ -10,6 +12,7 @@ module.exports = {
       colors: {
         primary: colors.purple,
         secondary: colors.sky,
+        tertiary: colors.slate,
         gray: colors.slate,
       },
     },

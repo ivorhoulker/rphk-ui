@@ -19,7 +19,7 @@ module.exports = {
     builder: '@storybook/builder-webpack5',
   },
   staticDirs: ['../public'],
-  docs: {
-    docsPage: 'automatic',
-  },
+  // docs: {
+  //   docsPage: 'automatic',
+  // },
 };

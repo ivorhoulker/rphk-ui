@@ -2,7 +2,7 @@ import { VideoHTMLAttributes } from 'react';
 
 import clsx from 'clsx';
 
-interface Props extends VideoHTMLAttributes<HTMLVideoElement> {}
+type Props = VideoHTMLAttributes<HTMLVideoElement>;
 export const Video = ({ className, ...args }: Props) => {
   return (
     <div className="h-full w-full bg-black hue-rotate-90">

@@ -1,4 +1,4 @@
-export * from './Button';
+export * from './Primitives/Button';
 export * from './Video';
 export * from './HUD';
-export * from './TextInput';
+export * from './Primitives/TextInput';

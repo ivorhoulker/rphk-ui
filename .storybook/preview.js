@@ -1,9 +1,11 @@
 import '../src/styles/global.css';
 import { themes } from '@storybook/theming';
+import dark from './dark';
+import light from './light';
 export const parameters = {
   darkMode: {
-    dark: { ...themes.dark },
-    light: { ...themes.light },
+    dark,
+    light,
     darkClass: 'dark',
     stylePreview: true,
     current: 'dark',
@@ -14,5 +16,8 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  docs: {
+    theme: dark,
   },
 };
