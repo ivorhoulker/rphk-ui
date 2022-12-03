@@ -7,12 +7,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
-    "storybook": "sb dev -p 6006",
+    "storybook": "start-storybook -p 6006",
     "build:storybook": "build-storybook",
     "dev:ui": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
     "dev": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn dev:ui\" \"yarn storybook\"",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "build-storybook": "build-storybook"
   },
   "files": [
     "dist/**"
@@ -26,17 +27,23 @@
     "twrnc": "^3.4.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.5",
     "@rphk/tsconfig": "*",
     "@storybook/addon-actions": "^6.5.14",
     "@storybook/addon-docs": "^6.5.14",
     "@storybook/addon-essentials": "^6.5.14",
     "@storybook/addon-interactions": "^6.5.14",
+    "@storybook/addon-links": "^6.5.14",
     "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/builder-webpack5": "^6.5.14",
+    "@storybook/manager-webpack5": "^6.5.14",
     "@storybook/react": "^6.5.14",
+    "@storybook/testing-library": "^0.0.13",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^2.2.0",
     "autoprefixer": "^10.4.13",
+    "babel-loader": "^8.3.0",
     "chromatic": "^6.11.4",
     "eslint": "^8.19.0",
     "eslint-plugin-storybook": "^0.6.7",
