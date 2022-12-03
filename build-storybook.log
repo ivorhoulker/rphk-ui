@@ -1,0 +1,19 @@
+@storybook/cli v7.0.0-alpha.56
+
+info => Cleaning outputDir: /var/folders/_g/fxk02my940n5ln5ct30_vltm0000gn/T/chromatic--72102-upHXw5jstaey
+(node:72119) ExperimentalWarning: The Fetch API is an experimental feature. This feature could change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+info => Loading presets
+info => Building manager..
+WARN unable to find package.json for @rphk/tsconfig
+info => Manager built (115 ms)
+info => Copying static files: /Users/ivorhoulker/CODE/presence-2-turborepo/packages/ui/public at /var/folders/_g/fxk02my940n5ln5ct30_vltm0000gn/T/chromatic--72102-upHXw5jstaey/
+[@vitejs/plugin-react] This plugin imports React for you automatically, so you can stop using `esbuild.jsxInject` for that purpose.
+vite v3.2.4 building for production...
+transforming...
+✓ 18 modules transformed.
+[vite]: Rollup failed to resolve import "window" from "../../node_modules/@storybook/react/dist/chunk-LSK4KSW4.mjs".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+[?25l[2K[1G[36m?[39m [1mWould you like to send crash reports to Storybook?[22m [90m›[39m [90m(Y/n)[39m
