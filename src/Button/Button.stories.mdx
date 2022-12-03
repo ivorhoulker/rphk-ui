@@ -20,7 +20,11 @@ import { Button } from './Button';
           setValue('Primary');
         }
       };
-      return <Button primary={isPrimary} onClick={handleOnChange} label={value} />;
+      return (
+        <Button primary={isPrimary} onClick={handleOnChange} label={value}>
+          Test
+        </Button>
+      );
     }}
   </Story>
 </Canvas>
