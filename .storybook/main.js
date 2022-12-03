@@ -12,14 +12,14 @@ module.exports = {
     // Merge custom configuration into the default config
     return {
       ...config,
-      // define: {
-      //   ...config.define,
-      //   global: 'window',
-      // },
-      // esbuild: {
-      //   ...config.esbuild,
-      //   jsxInject: `import React from 'react'`,
-      // },
+      define: {
+        ...config.define,
+        global: 'window',
+      },
+      esbuild: {
+        ...config.esbuild,
+        jsxInject: `import React from 'react'`,
+      },
     };
   },
   docs: {
