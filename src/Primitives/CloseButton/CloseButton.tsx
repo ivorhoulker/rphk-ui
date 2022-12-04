@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import clsx from 'clsx';
-
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   screenReaderText?: string;
 }

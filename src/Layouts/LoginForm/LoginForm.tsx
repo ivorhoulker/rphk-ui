@@ -1,19 +1,16 @@
 import { Button } from '../../Primitives/Button';
-import { NotificationText } from '../../Primitives/NotificationText';
-import { ReactNode } from 'react';
 import { TextInput } from '../../Primitives/TextInput';
-import clsx from 'clsx';
 //TODO
 interface Props {
-  children?: ReactNode;
+  loginText?: string;
 }
 
-export const LoginForm = ({ children }: Props) => {
+export const LoginForm = ({ loginText = 'Login' }: Props) => {
   return (
     <div className="relative flex h-full w-full flex-col">
       <TextInput id="email" />
       <TextInput id="password" />
-      <Button variant="primary">Login</Button>
+      <Button variant="primary">{loginText}</Button>
     </div>
   );
 };
