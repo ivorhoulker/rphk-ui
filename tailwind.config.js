@@ -15,6 +15,9 @@ module.exports = {
         tertiary: colors.slate,
         gray: colors.slate,
       },
+      scale: {
+        flip: '-1',
+      },
     },
   },
   plugins: [],
