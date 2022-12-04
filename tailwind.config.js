@@ -13,7 +13,7 @@ module.exports = {
         primary: colors.purple,
         secondary: colors.sky,
         tertiary: colors.slate,
-        gray: colors.slate,
+        gray: colors.zinc,
       },
       scale: {
         flip: '-1',

@@ -1,5 +1,4 @@
 import { VideoHTMLAttributes } from 'react';
-
 import clsx from 'clsx';
 
 interface Props extends VideoHTMLAttributes<HTMLVideoElement> {
@@ -25,7 +24,7 @@ export const Video = ({
   return (
     <div
       className={clsx(
-        'flex h-96 max-h-full max-w-full flex-col justify-center overflow-hidden bg-black hue-rotate-90',
+        'flex h-96 max-h-full max-w-full flex-col justify-center overflow-hidden bg-black',
         aspect === '16/9' && 'aspect-video',
         aspect === '9/16' && 'aspect-[9/16]',
         aspect === '4/3' && 'aspect-[4/3]',

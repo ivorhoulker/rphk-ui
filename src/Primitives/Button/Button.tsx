@@ -2,16 +2,17 @@ import * as React from 'react';
 
 import clsx from 'clsx';
 
-export interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant: 'primary' | 'secondary' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   disabled?: boolean;
 }
 
-export function Button({ children, size = 'md', variant = 'primary', disabled = false }: Props) {
+export function Button({ children, size = 'md', variant = 'primary', disabled = false, ...args }: Props) {
   return (
     <button
+      {...args}
       disabled={disabled}
       className={clsx(
         'text-center font-medium text-white',
@@ -20,8 +21,8 @@ export function Button({ children, size = 'md', variant = 'primary', disabled = 
         'transition-colors duration-100 ease-out',
         !!disabled && 'cursor-not-allowed opacity-70',
         size === 'xs' && 'px-2.5 py-1 text-xs',
-        size === 'sm' && 'px-3 py-2 text-sm',
-        size === 'md' && 'px-4 py-2.5 text-base',
+        size === 'sm' && 'px-5 py-2.5 text-sm',
+        size === 'md' && 'px-5 py-2.5 text-base',
         size === 'lg' && 'py-2.5 px-5 text-lg',
         variant === 'primary' && 'bg-primary-700 ',
         variant === 'primary' &&
@@ -35,6 +36,10 @@ export function Button({ children, size = 'md', variant = 'primary', disabled = 
         variant === 'tertiary' &&
           !disabled &&
           ' hover:bg-tertiary-800 focus-visible:ring-tertiary-300 active:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 dark:focus-visible:ring-tertiary-800 dark:active:bg-tertiary-500',
+        variant === 'outline' && 'border border-gray-200 bg-opacity-50 text-gray-500',
+        variant === 'outline' &&
+          !disabled &&
+          'hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-primary-300 active:bg-gray-200 dark:border-gray-500 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus-visible:ring-gray-600 dark:active:bg-gray-500',
       )}
       type="button"
     >
@@ -42,5 +47,3 @@ export function Button({ children, size = 'md', variant = 'primary', disabled = 
     </button>
   );
 }
-
-Button.displayName = 'Button';

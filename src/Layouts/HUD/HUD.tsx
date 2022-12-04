@@ -1,16 +1,17 @@
+import { NotificationText } from '../../Primitives/NotificationText';
 import { ReactNode } from 'react';
-import { Video } from '../../Primitives/Video';
 import clsx from 'clsx';
 //TODO
 interface Props {
   showLayoutDebug: boolean;
   children?: ReactNode;
+  warningMessage?: string;
 }
 
-export const HUD = ({ children, showLayoutDebug }: Props) => {
+export const HUD = ({ children, showLayoutDebug, warningMessage }: Props) => {
   return (
-    <div className="relative h-full w-full shadow-inner">
-      <Video />
+    <div className="relative h-full w-full ">
+      {children}
 
       <div
         className={clsx(
@@ -52,7 +53,11 @@ export const HUD = ({ children, showLayoutDebug }: Props) => {
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          Warnings
+          {!!warningMessage && (
+            <NotificationText variant="warning" size="lg">
+              {warningMessage}
+            </NotificationText>
+          )}
         </div>
         <div className={clsx('flex items-center justify-end', showLayoutDebug && 'bg-green-100 bg-opacity-40')}>
           Right
@@ -75,7 +80,6 @@ export const HUD = ({ children, showLayoutDebug }: Props) => {
           Buttons
         </div>
       </div>
-      {children}
     </div>
   );
 };
