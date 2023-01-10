@@ -5,7 +5,7 @@ info => Cleaning outputDir: /var/folders/_g/fxk02my940n5ln5ct30_vltm0000gn/T/chr
 (Use `node --trace-warnings ...` to show where the warning was created)
 info => Loading presets
 info => Building manager..
-WARN unable to find package.json for @rphk/tsconfig
+WARN unable to find package.json for tsconfig
 info => Manager built (115 ms)
 info => Copying static files: /Users/ivorhoulker/CODE/presence-2-turborepo/packages/ui/public at /var/folders/_g/fxk02my940n5ln5ct30_vltm0000gn/T/chromatic--72102-upHXw5jstaey/
 [@vitejs/plugin-react] This plugin imports React for you automatically, so you can stop using `esbuild.jsxInject` for that purpose.
