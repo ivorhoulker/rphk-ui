@@ -19,7 +19,9 @@
     "dist/**"
   ],
   "dependencies": {
+    "@react-spring/web": "^9.6.1",
     "@rphk/constants": "*",
+    "@use-gesture/react": "^10.2.23",
     "clsx": "^1.2.1",
     "framer-motion": "^8.3.3",
     "react": "^18.2.0",
