@@ -15,5 +15,8 @@ const Template: ComponentStoryFn<typeof Joypad> = (args) => <Joypad {...args} />
 
 export const Square = Template.bind({});
 Square.args = {
-  className: 'aspect-square',
+  handleChange: ({ x, y }) => {
+    console.log({ x, y });
+  },
+  width: 200,
 };

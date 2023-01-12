@@ -1,17 +1,22 @@
+import { ReactNode, useRef } from 'react';
+
+import { Joypad } from '../Joypad';
 import { NotificationText } from '../../Primitives/NotificationText';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
+
 //TODO
 interface Props {
   showLayoutDebug: boolean;
   children?: ReactNode;
   warningMessage?: string;
+  onXYChange: ({ x, y }: { x: number; y: number }) => void;
 }
 
-export const HUD = ({ children, showLayoutDebug, warningMessage }: Props) => {
+export const HUD = ({ children, showLayoutDebug, warningMessage, onXYChange }: Props) => {
+  const inputRef = useRef<HTMLDivElement>();
   return (
-    <div className="relative h-full w-full ">
-      {children}
+    <div className="relative h-full w-full " ref={inputRef}>
+      <div>{children}</div>
 
       <div
         className={clsx(
@@ -73,11 +78,11 @@ export const HUD = ({ children, showLayoutDebug, warningMessage }: Props) => {
         </div>
         <div
           className={clsx(
-            'col-span-2 row-span-2 flex items-end justify-end',
+            'col-span-2 row-span-2 flex items-end justify-end pb-2 pr-2',
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          Buttons
+          <Joypad width={110} onChange={onXYChange} parentRef={inputRef} />
         </div>
       </div>
     </div>
