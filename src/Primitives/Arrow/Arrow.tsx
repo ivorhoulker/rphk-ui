@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { CSS, animated } from '@react-spring/web';
-
 import { CSSProperties } from 'react';
 import clsx from 'clsx';
 

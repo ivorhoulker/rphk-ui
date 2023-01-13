@@ -1,7 +1,6 @@
 import { ComponentStoryFn, Meta } from '@storybook/react';
 
 import { Joypad } from '.';
-import { Video } from '../../Primitives/Video';
 
 const meta: Meta<typeof Joypad> = {
   component: Joypad,

@@ -1,7 +1,6 @@
 import { ComponentStoryFn, Meta } from '@storybook/react';
 
 import { Tiltpad } from '.';
-import { Video } from '../../Primitives/Video';
 
 const meta: Meta<typeof Tiltpad> = {
   component: Tiltpad,

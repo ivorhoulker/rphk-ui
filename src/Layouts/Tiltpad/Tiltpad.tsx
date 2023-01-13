@@ -106,7 +106,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
     });
   };
 
-  const bind = useDrag(({ down, xy: [ox, oy] }) => {
+  const bind = useDrag(({ down, xy: [, oy] }) => {
     if (isKeyboardControlling(keyStates.current)) return; // disable joypad drag control if keyboard keys to control movement are held down
     if (down) {
       const newY = Math.min(
