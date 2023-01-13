@@ -1,11 +1,9 @@
 import { Arrow, ArrowKey } from '../../Primitives/Arrow';
-import { CSSProperties, ReactNode, useCallback, useRef, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { SpringValue, animated, useSpring } from '@react-spring/web';
-import { useDrag, useGesture } from '@use-gesture/react';
 
-import { NotificationText } from '../../Primitives/NotificationText';
 import clsx from 'clsx';
-import { useEffect } from '@storybook/addons';
+import { useDrag } from '@use-gesture/react';
 
 //TODO
 interface Props {
@@ -16,28 +14,97 @@ interface Props {
   manualY?: number;
   keyStates?: Record<string, boolean>;
   onChange?: ({ x, y }: { x: number; y: number }) => void;
-  width: number;
+  height: number;
   arrowSmallness?: number;
   parentRef: React.MutableRefObject<HTMLDivElement>;
 }
 
-export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, parentRef }: Props) => {
-  // const [height, setHeight] = useState(null);
-  // const [width, setWidth] = useState(null);
+export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness = 7, parentRef }: Props) => {
+  const keysUsed = ['w', 'a', 's', 'd', 'UpArrow', 'DownArrow', 'LeftArrow', 'RightArrow'];
+  const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
 
-  // useEffect(() => {
-  //   const resizeObserver = new ResizeObserver((event) => {
-  //     // Depending on the layout, you may need to swap inlineSize with blockSize
-  //     // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry/contentBoxSize
-  //     setWidth(event[0].contentBoxSize[0].inlineSize);
-  //     setHeight(event[0].contentBoxSize[0].blockSize);
-  //     console.log('here');
-  //   });
+  const keyStates = useRef<Record<string, boolean>>({});
+  const inputRef = useRef<HTMLDivElement>();
+  const oldEffectiveX = useRef(0);
+  const oldEffectiveY = useRef(0);
 
-  //   inputRef?.current && resizeObserver.observe(inputRef?.current);
-  // });
+  const activeElementIsInputField = () => {
+    const activeElement = document?.activeElement;
+    return activeElement && ignoreIfActiveElementIsOneOf.indexOf(activeElement.tagName.toLowerCase()) !== -1;
+  };
 
-  const IDEAL_AREA = width;
+  // if alt+tab or click another tab while holding a move key, then reset keys and send 0,0 signal
+  const onBlur = () => {
+    keyStates.current = {};
+    onChange({ x: 0, y: 0 });
+  };
+  useEffect(() => {
+    window.addEventListener('blur', onBlur);
+    return () => {
+      window.removeEventListener('blur', onBlur);
+    };
+  }, []);
+
+  const isKeyboardControlling = (states: Record<string, boolean>) => {
+    return (
+      states.w ||
+      states.ArrowUp ||
+      states.a ||
+      states.ArrowLeft ||
+      states.s ||
+      states.ArrowDown ||
+      states.d ||
+      states.ArrowRight
+    );
+  };
+
+  const getXYFromKeyStates = (states: Record<string, boolean>) => {
+    let x = 0;
+    let y = 0;
+    if (states.w || states.ArrowUp) y += 1;
+    if (states.a || states.ArrowLeft) x -= 1;
+    if (states.s || states.ArrowDown) y -= 1;
+    if (states.d || states.ArrowRight) x += 1;
+    return { x, y };
+  };
+  const onKeydown = (event: KeyboardEvent) => {
+    if (activeElementIsInputField()) return;
+    if (keysUsed.includes(event.key)) event.preventDefault();
+
+    keyStates.current[event.key] = true;
+    const { x, y } = getXYFromKeyStates(keyStates.current);
+    if (x !== oldEffectiveX.current || y !== oldEffectiveY.current) {
+      oldEffectiveX.current = x;
+      oldEffectiveY.current = y;
+      onChange({ x, y });
+      manualHighlight({ x, y });
+    }
+  };
+
+  const onKeyup = (event: KeyboardEvent) => {
+    if (activeElementIsInputField()) return;
+    if (keysUsed.includes(event.key)) event.preventDefault();
+
+    delete keyStates.current[event.key];
+    const { x, y } = getXYFromKeyStates(keyStates.current);
+    if (x !== oldEffectiveX.current || y !== oldEffectiveY.current) {
+      oldEffectiveX.current = x;
+      oldEffectiveY.current = y;
+      onChange({ x, y });
+      manualHighlight({ x, y });
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('keydown', onKeydown);
+    document.addEventListener('keyup', onKeyup);
+    return () => {
+      document.removeEventListener('keydown', onKeydown);
+      document.removeEventListener('keyup', onKeyup);
+    };
+  }, []);
+
+  const IDEAL_AREA = height;
+  const THUMB_SIZE = IDEAL_AREA / 5;
   const TWO_THIRDS_AREA = (IDEAL_AREA * 2) / 3;
   const ONE_THIRD_AREA = (IDEAL_AREA * 1) / 3;
   const [{ x, y, opacity, up, down, left, right, upRight, upLeft, downRight, downLeft }, api] = useSpring(() => ({
@@ -53,9 +120,6 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
     downRight: 0,
     downLeft: 0,
   }));
-  const inputRef = useRef<HTMLDivElement>();
-  const oldEffectiveX = useRef(0);
-  const oldEffectiveY = useRef(0);
 
   const manualHighlight = ({ x, y }: { x: number; y: number }) => {
     api.start({
@@ -70,57 +134,62 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
     });
   };
 
-  const bind = useDrag(
-    ({ down, xy: [ox, oy] }) => {
-      console.log({ ox, oy });
-      if (down) {
-        const newX = Math.min(IDEAL_AREA, Math.max(0, ox - inputRef.current.offsetLeft - parentRef.current.offsetLeft));
-        const newY = Math.min(IDEAL_AREA, Math.max(0, oy - inputRef.current.offsetTop - parentRef.current.offsetTop));
-        const effectiveX = newX < ONE_THIRD_AREA ? -1 : newX > TWO_THIRDS_AREA ? 1 : 0;
-        const effectiveY = newY < ONE_THIRD_AREA ? 1 : newY > TWO_THIRDS_AREA ? -1 : 0;
-        if (effectiveX !== oldEffectiveX.current || effectiveY !== oldEffectiveY.current) {
-          onChange({ x: effectiveX, y: effectiveY });
-        }
-        oldEffectiveX.current = effectiveX;
-        oldEffectiveY.current = effectiveY;
-
-        api.start({
-          x: newX,
-          y: newY,
-          immediate: down,
-          opacity: 0.5,
-        });
-        api.start({
-          upLeft: effectiveX === -1 && effectiveY === 1 ? 1 : 0,
-          up: effectiveX === 0 && effectiveY === 1 ? 1 : 0,
-          upRight: effectiveX === 1 && effectiveY === 1 ? 1 : 0,
-          left: effectiveX === -1 && effectiveY === 0 ? 1 : 0,
-          right: effectiveX === 1 && effectiveY === 0 ? 1 : 0,
-          downLeft: effectiveX === -1 && effectiveY === -1 ? 1 : 0,
-          down: effectiveX === 0 && effectiveY === -1 ? 1 : 0,
-          downRight: effectiveX === 1 && effectiveY === -1 ? 1 : 0,
-        });
-      } else {
-        onChange({ x: 0, y: 0 });
-        api.start({
-          x: IDEAL_AREA / 2,
-          y: IDEAL_AREA / 2,
-          opacity: 0,
-          up: 0,
-          down: 0,
-          left: 0,
-          right: 0,
-          upRight: 0,
-          upLeft: 0,
-          downRight: 0,
-          downLeft: 0,
-        });
+  const bind = useDrag(({ down, xy: [ox, oy], buttons }) => {
+    console.log({ buttons });
+    if (isKeyboardControlling(keyStates.current)) return; // disable joypad drag control if keyboard keys to control movement are held down
+    if (down) {
+      const newX = Math.min(
+        IDEAL_AREA - THUMB_SIZE / 2,
+        Math.max(THUMB_SIZE / 2, ox - inputRef.current.offsetLeft - (parentRef?.current?.offsetLeft || 0)),
+      );
+      const newY = Math.min(
+        IDEAL_AREA - THUMB_SIZE / 2,
+        Math.max(
+          THUMB_SIZE / 2,
+          oy - inputRef.current.offsetTop - (parentRef?.current?.offsetTop || 0) + window.scrollY,
+        ),
+      );
+      const effectiveX = newX < ONE_THIRD_AREA ? -1 : newX > TWO_THIRDS_AREA ? 1 : 0;
+      const effectiveY = newY < ONE_THIRD_AREA ? 1 : newY > TWO_THIRDS_AREA ? -1 : 0;
+      if (effectiveX !== oldEffectiveX.current || effectiveY !== oldEffectiveY.current) {
+        onChange({ x: effectiveX, y: effectiveY });
       }
-    },
-    {
-      // bounds: { left: 0, right: 400, top: 0, bottom: 400 },
-    },
-  );
+      oldEffectiveX.current = effectiveX;
+      oldEffectiveY.current = effectiveY;
+
+      api.start({
+        x: newX,
+        y: newY,
+        immediate: down,
+        opacity: 0.5,
+      });
+      api.start({
+        upLeft: effectiveX === -1 && effectiveY === 1 ? 1 : 0,
+        up: effectiveX === 0 && effectiveY === 1 ? 1 : 0,
+        upRight: effectiveX === 1 && effectiveY === 1 ? 1 : 0,
+        left: effectiveX === -1 && effectiveY === 0 ? 1 : 0,
+        right: effectiveX === 1 && effectiveY === 0 ? 1 : 0,
+        downLeft: effectiveX === -1 && effectiveY === -1 ? 1 : 0,
+        down: effectiveX === 0 && effectiveY === -1 ? 1 : 0,
+        downRight: effectiveX === 1 && effectiveY === -1 ? 1 : 0,
+      });
+    } else {
+      onChange({ x: 0, y: 0 });
+      api.start({
+        x: IDEAL_AREA / 2,
+        y: IDEAL_AREA / 2,
+        opacity: 0,
+        up: 0,
+        down: 0,
+        left: 0,
+        right: 0,
+        upRight: 0,
+        upLeft: 0,
+        downRight: 0,
+        downLeft: 0,
+      });
+    }
+  }, {});
 
   return (
     <>
@@ -131,6 +200,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
             showLayoutDebug && 'bg-red-100 bg-opacity-40',
           )}
           {...bind()}
+          style={{ padding: THUMB_SIZE / 5 }}
         >
           <animated.div
             className={clsx(
@@ -140,7 +210,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="up-left"
-              opacity={upLeft}
+              activeOpacity={upLeft}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -156,7 +226,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="up"
-              opacity={up}
+              activeOpacity={up}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -172,7 +242,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="up-right"
-              opacity={upRight}
+              activeOpacity={upRight}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -188,7 +258,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="left"
-              opacity={left}
+              activeOpacity={left}
               style={{ width: IDEAL_AREA / arrowSmallness, height: IDEAL_AREA / arrowSmallness }}
             />
           </animated.div>
@@ -202,7 +272,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="right"
-              opacity={right}
+              activeOpacity={right}
               style={{ width: IDEAL_AREA / arrowSmallness, height: IDEAL_AREA / arrowSmallness }}
             />
           </animated.div>
@@ -215,7 +285,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="down-left"
-              opacity={downLeft}
+              activeOpacity={downLeft}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -231,7 +301,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="down"
-              opacity={down}
+              activeOpacity={down}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -247,7 +317,7 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
           >
             <ArrowLayers
               arrowKey="down-right"
-              opacity={downRight}
+              activeOpacity={downRight}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
@@ -263,8 +333,8 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
             opacity,
             translateX: -IDEAL_AREA / 10,
             translateY: -IDEAL_AREA / 10,
-            width: IDEAL_AREA / 5,
-            height: IDEAL_AREA / 5,
+            width: THUMB_SIZE,
+            height: THUMB_SIZE,
           }}
         />
       </div>
@@ -273,21 +343,21 @@ export const Joypad = ({ showLayoutDebug, onChange, width, arrowSmallness = 7, p
 };
 
 function ArrowLayers({
-  opacity,
+  activeOpacity,
   arrowKey,
   style,
 }: {
-  opacity: SpringValue<number>;
+  activeOpacity: SpringValue<number>;
   arrowKey: ArrowKey;
   style?: CSSProperties;
 }) {
   return (
     <div className="relative" style={style}>
       <div className="absolute top-0 left-0 bottom-0 right-0">
-        <Arrow variant={arrowKey} className="text-gray-500" style={style} />
+        <Arrow variant={arrowKey} active={false} style={style} />
       </div>
-      <animated.div style={{ opacity }} className="absolute top-0 left-0 bottom-0 right-0">
-        <Arrow variant={arrowKey} className="text-purple-500" style={style} />
+      <animated.div style={{ opacity: activeOpacity }} className="absolute top-0 left-0 bottom-0 right-0">
+        <Arrow variant={arrowKey} active={true} style={style} />
       </animated.div>
     </div>
   );

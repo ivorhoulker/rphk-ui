@@ -1,10 +1,10 @@
 import { ComponentStoryFn, Meta } from '@storybook/react';
 
-import { Joypad } from '.';
+import { Tiltpad } from '.';
 import { Video } from '../../Primitives/Video';
 
-const meta: Meta<typeof Joypad> = {
-  component: Joypad,
+const meta: Meta<typeof Tiltpad> = {
+  component: Tiltpad,
   parameters: {
     layout: 'centered',
   },
@@ -14,32 +14,32 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   return <div>{children}</div>;
 };
 
-const Template: ComponentStoryFn<typeof Joypad> = (args) => (
+const Template: ComponentStoryFn<typeof Tiltpad> = (args) => (
   <Wrapper>
-    <Joypad {...args} />
+    <Tiltpad {...args} />
   </Wrapper>
 );
 
 export const Small = Template.bind({});
 Small.args = {
-  onChange: ({ x, y }) => {
-    console.log({ x, y });
+  onChange: ({ y }) => {
+    console.log({ tilt: y });
   },
   height: 120,
 };
 
 export const Medium = Template.bind({});
 Medium.args = {
-  onChange: ({ x, y }) => {
-    console.log({ x, y });
+  onChange: ({ y }) => {
+    console.log({ tilt: y });
   },
   height: 200,
 };
 
 export const Large = Template.bind({});
 Large.args = {
-  onChange: ({ x, y }) => {
-    console.log({ x, y });
+  onChange: ({ y }) => {
+    console.log({ tilt: y });
   },
   height: 400,
 };

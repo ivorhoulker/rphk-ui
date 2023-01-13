@@ -132,12 +132,11 @@ export type ArrowKey = keyof typeof componentDict;
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: keyof typeof componentDict;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
   active?: boolean;
   style?: CSSProperties;
 }
 
-export function Arrow({ size = 'md', variant = 'up', className = '', active = false, style }: Props) {
+export function Arrow({ variant = 'up', className = '', active = false, style = { width: 40, height: 40 } }: Props) {
   const Component = componentDict[variant];
 
   return (
@@ -145,6 +144,8 @@ export function Arrow({ size = 'md', variant = 'up', className = '', active = fa
       className={clsx([
         'transition-all',
         // size === 'md' ? 'h-6 w-6' : size === 'sm' ? 'h-4 w-4' : size === 'lg' ? 'h-8 w-8' : 'h-3 w-3',
+        !active && 'text-gray-500',
+        active && 'text-purple-500',
         !!className && className,
       ])}
       style={style}

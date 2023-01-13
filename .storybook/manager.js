@@ -3,4 +3,5 @@ import dark from './dark';
 
 addons.setConfig({
   theme: dark,
+  enableShortcuts: false,
 });
