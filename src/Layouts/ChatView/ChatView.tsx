@@ -11,7 +11,7 @@ export const ChatView = ({ messages }: Props) => {
     scrollViewRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }, [messages]);
   return (
-    <div dir={'rtl'} className="right-to flex h-full max-h-full w-full flex-col overflow-y-scroll p-3 text-white">
+    <div dir={'rtl'} className="text-md flex h-full max-h-full w-full flex-col overflow-y-scroll p-1 text-white">
       {messages?.map((x) => (
         <div dir={'ltr'} key={x.uid}>
           <span>{x.user}: </span>

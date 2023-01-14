@@ -88,7 +88,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
     };
   }, []);
 
-  const IDEAL_AREA = height;
+  const IDEAL_AREA = Math.min(200, height);
   const THUMB_SIZE = IDEAL_AREA / 5;
   const TWO_THIRDS_AREA = (IDEAL_AREA * 2) / 3;
   const ONE_THIRD_AREA = (IDEAL_AREA * 1) / 3;

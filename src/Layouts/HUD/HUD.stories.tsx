@@ -25,9 +25,6 @@ export const SixteenByNine = Template.bind({});
 SixteenByNine.args = {
   messages,
   children: <Video />,
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
 };
 
 export const SixteenByNineGuides = Template.bind({});

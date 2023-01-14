@@ -1,6 +1,7 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '../../Primitives/Button';
+import { ChatInput } from '../../Primitives/ChatInput';
 import { ChatView } from '../ChatView';
 import { Joypad } from '../Joypad';
 import { NotificationText } from '../../Primitives/NotificationText';
@@ -17,6 +18,7 @@ interface Props {
   onXYChange: ({ x, y }: { x: number; y: number }) => void;
   onTiltChange: ({ y }: { y: number }) => void;
   onEmojiClick: (emojiName: string) => void;
+  onSubmitMessage: (messageText: string) => void;
   messages?: Array<{ uid: string; message: string; user: string }>;
 }
 
@@ -27,6 +29,7 @@ export const HUD = ({
   onXYChange,
   onTiltChange,
   onEmojiClick,
+  onSubmitMessage,
   messages,
 }: Props) => {
   const inputRef = useRef<HTMLDivElement>();
@@ -170,7 +173,13 @@ export const HUD = ({
         >
           <div className="flex max-h-full w-full flex-col">
             <ChatView messages={messages} />
-            <TextInput id="test" />
+            <ChatInput
+              id="chat"
+              className="pl-2"
+              placeholder="Press Enter to type..."
+              // onValueChange={console.log}
+              onValueSubmit={onSubmitMessage}
+            />
           </div>
         </div>
         <div
@@ -179,16 +188,16 @@ export const HUD = ({
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          <Button variant="outline" size="xs" onClick={() => onEmojiClick('smile')}>
+          <Button hotKey="1" variant="outline" size="xs" onClick={() => onEmojiClick('smile')}>
             <span className="text-2xl">😊</span>
           </Button>
-          <Button variant="outline" size="xs" onClick={() => onEmojiClick('frown')}>
+          <Button hotKey="2" variant="outline" size="xs" onClick={() => onEmojiClick('frown')}>
             <span className="text-2xl">☹️</span>
           </Button>
-          <Button variant="outline" size="xs" onClick={() => onEmojiClick('yes')}>
+          <Button hotKey="3" variant="outline" size="xs" onClick={() => onEmojiClick('yes')}>
             <span className="text-2xl">👍</span>
           </Button>
-          <Button variant="outline" size="xs" onClick={() => onEmojiClick('no')}>
+          <Button hotKey="4" variant="outline" size="xs" onClick={() => onEmojiClick('no')}>
             <span className="text-2xl">🙅‍♂️</span>
           </Button>
         </div>
@@ -198,7 +207,7 @@ export const HUD = ({
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          <div ref={wrapperRef} className={clsx('flex h-full w-full items-center justify-end')}>
+          <div ref={wrapperRef} className={clsx('flex h-full w-full items-end justify-end')}>
             <Joypad height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
             <Tiltpad height={wrapperHeight || 110} onChange={onTiltChange} parentRef={inputRef} />
           </div>

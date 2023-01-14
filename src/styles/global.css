@@ -2,7 +2,7 @@
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: gray transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
 }
 
 /* Chrome, Edge, and Safari */
