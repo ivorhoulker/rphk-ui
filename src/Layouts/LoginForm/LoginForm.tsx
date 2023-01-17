@@ -46,7 +46,7 @@ export const LoginForm = ({ loginText = 'Login', isSubmittingOverride, onSubmit,
       validationSchema={toFormikValidationSchema(LoginSchema)}
     >
       {({ errors, values, touched, isSubmitting, handleChange, handleBlur, handleSubmit }) => (
-        <form className="relative flex h-full w-full flex-col" onSubmit={handleSubmit}>
+        <form className="space-between flex w-full max-w-xl flex-col justify-center gap-2" onSubmit={handleSubmit}>
           <TextInput
             label="Email"
             id="email"

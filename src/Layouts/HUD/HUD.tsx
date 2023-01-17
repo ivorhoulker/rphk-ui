@@ -133,7 +133,7 @@ export const HUD = ({
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          Stats
+          {showLayoutDebug && 'Stats? Debug console?'}
         </div>
         <div
           className={clsx(
@@ -141,7 +141,7 @@ export const HUD = ({
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          Up
+          {showLayoutDebug && 'Up'}
         </div>
         <div
           className={clsx(
@@ -149,10 +149,10 @@ export const HUD = ({
             showLayoutDebug && 'bg-green-100 bg-opacity-40',
           )}
         >
-          Map
+          {showLayoutDebug && 'Map?'}
         </div>
         <div className={clsx('flex items-center justify-start', showLayoutDebug && 'bg-green-100 bg-opacity-40')}>
-          Left
+          {showLayoutDebug && 'Left'}
         </div>
 
         <div
@@ -168,7 +168,7 @@ export const HUD = ({
           )}
         </div>
         <div className={clsx('flex items-center justify-end', showLayoutDebug && 'bg-green-100 bg-opacity-40')}>
-          Right
+          {showLayoutDebug && 'Right'}
         </div>
 
         <div
