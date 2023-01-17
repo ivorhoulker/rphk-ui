@@ -15,4 +15,5 @@ const Template: ComponentStoryFn<typeof TextInput> = (args) => <TextInput {...ar
 export const Primary = Template.bind({});
 Primary.args = {
   placeholder: 'Username',
+  className: 'w-60',
 };

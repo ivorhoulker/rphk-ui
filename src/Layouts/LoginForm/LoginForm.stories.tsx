@@ -2,6 +2,7 @@ import { ComponentStoryFn, Meta } from '@storybook/react';
 
 import { LoginForm } from '.';
 import { TextInput } from '../../Primitives/TextInput';
+import { Wrapper } from '../../placeholders/Wrapper';
 
 const meta: Meta<typeof LoginForm> = {
   component: LoginForm,
@@ -11,9 +12,14 @@ const meta: Meta<typeof LoginForm> = {
 };
 export default meta;
 
-const Template: ComponentStoryFn<typeof LoginForm> = (args) => <LoginForm {...args} />;
+const Template: ComponentStoryFn<typeof LoginForm> = (args) => (
+  <Wrapper className="w-60">
+    <LoginForm {...args} />
+  </Wrapper>
+);
 
 export const Primary = Template.bind({});
 Primary.args = {
-  children: <TextInput id="username" />,
+  testSubmitButton: true,
+  className: 'w-96',
 };

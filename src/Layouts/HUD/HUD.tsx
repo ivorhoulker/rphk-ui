@@ -36,6 +36,7 @@ export const HUD = ({
   const wrapperRef = useRef<HTMLDivElement>();
   const [wrapperHeight, setWrapperHeight] = useState(null);
   const { isPortrait } = useWindowDimensions();
+  const [chatMessage, setChatMessage] = useState('');
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((event) => {
@@ -98,7 +99,12 @@ export const HUD = ({
           >
             <div className="flex h-full w-full flex-col p-3">
               <ChatView messages={messages} />
-              <TextInput id="test" />
+              <ChatInput
+                id="chat"
+                className="pl-2 text-black"
+                placeholder="Press Enter to type..."
+                onValueSubmit={onSubmitMessage}
+              />
             </div>
           </div>
           <div className={clsx('col-span-3 row-span-2 p-3', showLayoutDebug && 'bg-green-100 bg-opacity-40')}>

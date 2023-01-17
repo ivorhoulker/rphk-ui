@@ -21,4 +21,5 @@ const Template: ComponentStoryFn<typeof ChatView> = (args) => (
 export const Primary = Template.bind({});
 Primary.args = {
   messages,
+  className: '',
 };

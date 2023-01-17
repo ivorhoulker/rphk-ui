@@ -1,27 +1,47 @@
-import { DetailedHTMLProps, InputHTMLAttributes, ReactElement } from 'react';
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
+import { Field } from 'formik';
 import clsx from 'clsx';
 
 interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   className?: string;
+  label: string;
   id: string;
-  component?: ReactElement;
+  formik?: boolean;
+  errors?: string;
+  touched?: boolean;
+  isSubmitting?: boolean;
 }
-export const TextInput = ({ className, id = 'Username', ...rest }: Props) => {
+export const TextInput = ({
+  className,
+  id = 'username',
+  label = 'Username',
+  required,
+  value,
+  isSubmitting = false,
+  errors,
+  touched,
+  ...rest
+}: Props) => {
   return (
-    <div className="group relative z-0 mb-6 w-full text-gray-900 dark:text-gray-50">
+    <div className={clsx('group relative z-0 mb-6 w-full text-gray-900 dark:text-gray-50', !!className && className)}>
       <input
         {...rest}
         id={id}
         placeholder=""
+        // required={required}
         name={id}
         className={clsx(
           'peer block w-full appearance-none bg-transparent py-2.5 px-0 text-sm',
           'border-0 border-b-2 border-gray-400 dark:border-gray-300',
           'focus:border-primary-500 focus:outline-none focus:ring-0',
-          !!className && className,
+
+          isSubmitting && 'text-gray-400 dark:text-gray-400',
         )}
+        required={required}
+        value={value}
       />
+
       <label
         htmlFor={id}
         className={clsx(
@@ -32,8 +52,9 @@ export const TextInput = ({ className, id = 'Username', ...rest }: Props) => {
           !!className && className,
         )}
       >
-        {id}
+        {label}
       </label>
+      {errors && touched && <p className="mt-2 text-sm text-red-400">{errors}</p>}
     </div>
   );
 };

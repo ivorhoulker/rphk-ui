@@ -31,3 +31,9 @@
     -webkit-text-stroke: 2px black;
   }
 }
+
+html,
+body {
+  @apply h-full;
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}

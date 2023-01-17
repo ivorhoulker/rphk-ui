@@ -72,7 +72,7 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
 
   return (
     <div className={clsx(['h-full w-full p-1 px-2', !!className && className])}>
-      <div className="group relative z-0 w-full text-gray-900 dark:text-gray-50">
+      <div className="group relative z-0 w-full ">
         <input
           ref={inputRef}
           {...rest}
@@ -83,8 +83,8 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
           onChange={handleChange}
           className={clsx(
             'text-md peer block w-full appearance-none bg-transparent py-2.5 px-0',
-            'border-0 ',
-            'focus:outline-none focus:ring-0',
+            'border-0 text-white',
+            'opacity-100 focus:outline-none focus:ring-0',
             !!className && className,
           )}
         />
