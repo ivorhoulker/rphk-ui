@@ -23,6 +23,7 @@
     "@rphk/constants": "*",
     "@use-gesture/react": "^10.2.23",
     "clsx": "^1.2.1",
+    "formik": "^2.2.9",
     "framer-motion": "^8.3.3",
     "next": "^13.1.2",
     "react": "^18.2.0",
