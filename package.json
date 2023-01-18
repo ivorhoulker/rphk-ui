@@ -55,7 +55,7 @@
     "autoprefixer": "^10.4.13",
     "babel-loader": "^8.3.0",
     "chromatic": "^6.11.4",
-    "eslint": "^8.19.0",
+    "eslint": "^8.32.0",
     "eslint-config-next": "^13.0.6",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.31.11",
@@ -69,7 +69,8 @@
     "tsconfig": "*",
     "tsup": "^6.0.1",
     "typescript": "^4.9.3",
-    "vite": "^3.2.4"
+    "vite": "^3.2.4",
+    "webpack": "^5.75.0"
   },
   "private": true,
   "_id": "@rphk/ui@0.0.0"
