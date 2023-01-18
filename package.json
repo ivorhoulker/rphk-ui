@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
-    "@bbbtech/storybook-formik": "^2.5.0",
     "@storybook/addon-actions": "^6.5.14",
     "@storybook/addon-docs": "^6.5.14",
     "@storybook/addon-essentials": "^6.5.14",

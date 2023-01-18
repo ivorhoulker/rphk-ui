@@ -9,7 +9,6 @@ module.exports = {
         },
       },
     },
-    '@bbbtech/storybook-formik/register',
     'storybook-dark-mode',
     '@storybook/addon-links',
     '@storybook/addon-essentials',

@@ -4,10 +4,10 @@ import { CloseButton } from '../../Primitives/CloseButton';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 interface Props {
-  children: React.ReactNode;
-  heading: string;
-  paragraphs: React.ReactNode[];
-  buttons: React.ReactNode[];
+  children?: React.ReactNode;
+  heading?: string;
+  paragraphs?: React.ReactNode[];
+  buttons?: React.ReactNode[];
   onClose: () => void;
 }
 /**

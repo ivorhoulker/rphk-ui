@@ -24,7 +24,7 @@ Primary.args = {
     <Button variant="primary" size="sm">
       I accept
     </Button>,
-    <Button variant="outline" size="sm">
+    <Button variant="tertiary" size="sm">
       Decline
     </Button>,
   ],
