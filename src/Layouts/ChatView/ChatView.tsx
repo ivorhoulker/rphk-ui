@@ -3,15 +3,15 @@ import { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 //TODO
-interface Props {
+export interface ChatViewProps {
   className?: string;
-  messages?: Array<{ uid: string; message: string; user: string }>;
+  messages?: Array<{ id: string; message: string; user: string }>;
 }
 
-export const ChatView = ({ messages, className }: Props) => {
+export const ChatView = ({ messages, className }: ChatViewProps) => {
   const scrollViewRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
-    scrollViewRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+    scrollViewRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }, [messages]);
   return (
     <div
@@ -22,7 +22,7 @@ export const ChatView = ({ messages, className }: Props) => {
       )}
     >
       {messages?.map((x) => (
-        <div dir={'ltr'} key={x.uid}>
+        <div dir={'ltr'} key={x.id}>
           <span>{x.user}: </span>
           <span>{x.message}</span>
         </div>

@@ -15,4 +15,6 @@ export * from './Primitives/Dropdown';
 export * from './Primitives/Loading';
 export * from './Primitives/NotificationText';
 export * from './Primitives/TextInput';
+export * from './Primitives/Section';
 export * from './Primitives/Video';
+export * from './Primitives/Header';

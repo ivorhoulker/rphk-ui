@@ -21,9 +21,9 @@ interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
   onValueSubmit?: (str: string) => void;
 }
 export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, onValueSubmit, ...rest }: Props) => {
-  const keysUsed = ['Enter', 'Escape'];
+  // const keysUsed = ['Enter', 'Escape'];
   const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
   const activeElementIsInputField = () => {
     const activeElement = document?.activeElement;
     return activeElement && ignoreIfActiveElementIsOneOf.indexOf(activeElement.tagName.toLowerCase()) !== -1;
@@ -38,7 +38,7 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
   };
 
   const handleSubmit = () => {
-    if (!inputRef.current.value) return;
+    if (!inputRef?.current?.value) return;
     onValueSubmit?.(inputRef.current.value);
     setValue('');
   };
@@ -50,16 +50,16 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
         //submit
         // if (!value) return inputRef.current.blur();
         handleSubmit();
-        inputRef.current.blur();
+        inputRef?.current?.blur();
       } else if (!activeElementIsInputField()) {
         event.preventDefault();
-        inputRef.current.focus();
+        inputRef?.current?.focus();
       }
     }
 
     if (event.key === 'Escape' && document.activeElement === inputRef.current) {
       event.preventDefault();
-      inputRef.current.blur();
+      inputRef?.current?.blur();
     }
   };
 
@@ -94,7 +94,7 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
             'absolute top-3 -z-10 origin-[0] -translate-y-6 scale-100 transform opacity-0',
             'text-md text-white duration-300 dark:text-white',
             'peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:opacity-100',
-            'peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-primary-500 peer-focus:opacity-0',
+            'peer-focus:text-primary-500 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:opacity-0',
             !!className && className,
           )}
         >

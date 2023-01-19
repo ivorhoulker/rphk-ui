@@ -3,7 +3,7 @@ import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
 import { Field } from 'formik';
 import clsx from 'clsx';
 
-interface Props extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+export interface TextInputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   className?: string;
   label: string;
   id: string;
@@ -22,7 +22,7 @@ export const TextInput = ({
   errors,
   touched,
   ...rest
-}: Props) => {
+}: TextInputProps) => {
   return (
     <div className={clsx('group relative z-0 mb-6 w-full text-gray-900 dark:text-gray-50', !!className && className)}>
       <input
@@ -46,9 +46,10 @@ export const TextInput = ({
         htmlFor={id}
         className={clsx(
           'absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform',
+
           'text-sm text-gray-400 duration-300 dark:text-gray-300',
           'peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100',
-          'peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-primary-500',
+          'peer-focus:text-primary-500 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium',
           !!className && className,
         )}
       >

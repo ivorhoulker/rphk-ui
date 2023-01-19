@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 
 type DropdownData = { id: string; label: string }[];
-interface IDropdownProps {
+export interface IDropdownProps {
   data: DropdownData;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'outline';
   size?: 'sm' | 'md' | 'lg' | 'xs';
@@ -32,7 +32,7 @@ export function Dropdown({
   const [selected, setSelected] = useState(initialSelectedId);
   const [hidden, setHidden] = useState(true);
   const outsideClickRef = useOutsideClick(() => setHidden(true));
-  const [buttonHeight, setButtonHeight] = useState(null);
+  const [buttonHeight, setButtonHeight] = useState<number>();
 
   useEffect(() => {
     const resizeObserver = new ResizeObserver((event) => {
@@ -42,7 +42,7 @@ export function Dropdown({
   }, []);
 
   const selectedLabel = data?.find((x) => x.id === selected)?.label ?? notSelectedText;
-  const buttonRef = useRef<HTMLDivElement>();
+  const buttonRef = useRef<HTMLDivElement>(null);
   return (
     <div className="relative" ref={outsideClickRef}>
       <div ref={buttonRef}>

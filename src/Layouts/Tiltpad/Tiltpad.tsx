@@ -16,7 +16,7 @@ interface Props {
   onChange?: ({ y }: { y: number }) => void;
   height: number;
   arrowSmallness?: number;
-  parentRef: React.MutableRefObject<HTMLDivElement>;
+  parentRef: React.RefObject<HTMLDivElement>;
 }
 
 export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7, parentRef }: Props) => {
@@ -24,13 +24,13 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
   const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
 
   const keyStates = useRef<Record<string, boolean>>({});
-  const inputRef = useRef<HTMLDivElement>();
+  const inputRef = useRef<HTMLDivElement>(null);
   const oldEffectiveY = useRef(0);
 
   // if alt+tab or click another tab while holding a tilt key, then reset keys and send 0,0 signal
   const onBlur = () => {
     keyStates.current = {};
-    onChange({ y: 0 });
+    onChange?.({ y: 0 });
   };
   useEffect(() => {
     window.addEventListener('blur', onBlur);
@@ -62,7 +62,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
     const { y } = getYFromKeyStates(keyStates.current);
     if (y !== oldEffectiveY.current) {
       oldEffectiveY.current = y;
-      onChange({ y });
+      onChange?.({ y });
       manualHighlight({ y });
     }
   };
@@ -75,7 +75,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
     const { y } = getYFromKeyStates(keyStates.current);
     if (y !== oldEffectiveY.current) {
       oldEffectiveY.current = y;
-      onChange({ y });
+      onChange?.({ y });
       manualHighlight({ y });
     }
   };
@@ -113,13 +113,13 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
         IDEAL_AREA - THUMB_SIZE / 2,
         Math.max(
           THUMB_SIZE / 2,
-          oy - inputRef.current.offsetTop - (parentRef?.current?.offsetTop || 0) + window.scrollY,
+          oy - (inputRef?.current?.offsetTop ?? 0) - (parentRef?.current?.offsetTop || 0) + window.scrollY,
         ),
       );
 
       const effectiveY = newY < ONE_THIRD_AREA ? 1 : newY > TWO_THIRDS_AREA ? -1 : 0;
       if (effectiveY !== oldEffectiveY.current) {
-        onChange({ y: effectiveY });
+        onChange?.({ y: effectiveY });
       }
 
       oldEffectiveY.current = effectiveY;
@@ -135,7 +135,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
         down: effectiveY === -1 ? 1 : 0,
       });
     } else {
-      onChange({ y: 0 });
+      onChange?.({ y: 0 });
       api.start({
         y: IDEAL_AREA / 2,
         opacity: 0,
@@ -192,7 +192,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
           </animated.div>
         </animated.div>
         <animated.div
-          className="pointer-events-none transform rounded-full bg-primary-400"
+          className="bg-primary-400 pointer-events-none transform rounded-full"
           style={{
             y,
             x: THUMB_SIZE / 4,

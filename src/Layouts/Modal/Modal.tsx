@@ -19,10 +19,11 @@ interface Props {
  */
 export function Modal({ children, paragraphs, heading, onClose, buttons }: Props) {
   const outsideRef = useOutsideClick(onClose);
+  
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 min-h-full w-full min-w-full overflow-y-auto overflow-x-hidden bg-white bg-opacity-10 p-4 text-gray-900 dark:text-gray-50 ">
-      <div className="flex h-full w-full items-center justify-center">
-        <div ref={outsideRef} className="relative z-50 max-w-2xl rounded-lg bg-white shadow dark:bg-gray-800">
+    <div className="fixed top-0 left-0 right-0 bottom-0 min-h-full w-full min-w-full overflow-y-auto overflow-x-hidden bg-gray-500 bg-opacity-50 text-gray-900 backdrop-blur-sm dark:text-gray-50">
+      <div className="flex h-full w-full min-w-full items-center justify-center">
+        <div ref={outsideRef} className="relative z-50 max-w-3xl rounded-lg bg-white shadow dark:bg-gray-800">
           <div className="flex items-start justify-between rounded-t border-b px-6 py-4 dark:border-gray-600">
             <h3 className="text-xl font-semibold">{heading}</h3>
             <CloseButton onClick={onClose} />

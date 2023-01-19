@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { clsx } from 'clsx';
 
-interface Props {
+export interface LoadingProps {
   className?: string;
   variant: 'primary' | 'secondary';
   size?: 'sm' | 'md' | 'lg' | 'xl';
 }
-export const Loading: FC<Props> = ({ className, variant = 'primary', size = 'md' }) => {
+export const Loading: FC<LoadingProps> = ({ className, variant = 'primary', size = 'md' }) => {
   return (
     <>
       <div

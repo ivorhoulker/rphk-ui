@@ -60,6 +60,7 @@ export const LoginForm = ({ loginText = 'Login', isSubmittingOverride, onSubmit,
           <TextInput
             label="Password"
             id="password"
+            type="password"
             isSubmitting={isSubmitting}
             onChange={handleChange}
             onBlur={handleBlur}

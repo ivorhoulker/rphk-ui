@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { useDrag } from '@use-gesture/react';
 
 //TODO
-interface Props {
+export interface JoypadProps {
   showLayoutDebug?: boolean;
   children?: ReactNode;
   warningMessage?: string;
@@ -16,15 +16,15 @@ interface Props {
   onChange?: ({ x, y }: { x: number; y: number }) => void;
   height: number;
   arrowSmallness?: number;
-  parentRef: React.MutableRefObject<HTMLDivElement>;
+  parentRef: React.RefObject<HTMLDivElement>;
 }
 
-export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness = 7, parentRef }: Props) => {
+export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness = 7, parentRef }: JoypadProps) => {
   const keysUsed = ['w', 'a', 's', 'd', 'UpArrow', 'DownArrow', 'LeftArrow', 'RightArrow'];
   const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
 
   const keyStates = useRef<Record<string, boolean>>({});
-  const inputRef = useRef<HTMLDivElement>();
+  const inputRef = useRef<HTMLDivElement>(null);
   const oldEffectiveX = useRef(0);
   const oldEffectiveY = useRef(0);
 
@@ -36,7 +36,7 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
   // if alt+tab or click another tab while holding a move key, then reset keys and send 0,0 signal
   const onBlur = () => {
     keyStates.current = {};
-    onChange({ x: 0, y: 0 });
+    onChange?.({ x: 0, y: 0 });
   };
   useEffect(() => {
     window.addEventListener('blur', onBlur);
@@ -76,7 +76,7 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
     if (x !== oldEffectiveX.current || y !== oldEffectiveY.current) {
       oldEffectiveX.current = x;
       oldEffectiveY.current = y;
-      onChange({ x, y });
+      onChange?.({ x, y });
       manualHighlight({ x, y });
     }
   };
@@ -90,7 +90,7 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
     if (x !== oldEffectiveX.current || y !== oldEffectiveY.current) {
       oldEffectiveX.current = x;
       oldEffectiveY.current = y;
-      onChange({ x, y });
+      onChange?.({ x, y });
       manualHighlight({ x, y });
     }
   };
@@ -140,19 +140,19 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
     if (down) {
       const newX = Math.min(
         IDEAL_AREA - THUMB_SIZE / 2,
-        Math.max(THUMB_SIZE / 2, ox - inputRef.current.offsetLeft - (parentRef?.current?.offsetLeft || 0)),
+        Math.max(THUMB_SIZE / 2, ox - (inputRef?.current?.offsetLeft ?? 0) - (parentRef?.current?.offsetLeft || 0)),
       );
       const newY = Math.min(
         IDEAL_AREA - THUMB_SIZE / 2,
         Math.max(
           THUMB_SIZE / 2,
-          oy - inputRef.current.offsetTop - (parentRef?.current?.offsetTop || 0) + window.scrollY,
+          oy - (inputRef?.current?.offsetTop ?? 0) - (parentRef?.current?.offsetTop || 0) + window.scrollY,
         ),
       );
       const effectiveX = newX < ONE_THIRD_AREA ? -1 : newX > TWO_THIRDS_AREA ? 1 : 0;
       const effectiveY = newY < ONE_THIRD_AREA ? 1 : newY > TWO_THIRDS_AREA ? -1 : 0;
       if (effectiveX !== oldEffectiveX.current || effectiveY !== oldEffectiveY.current) {
-        onChange({ x: effectiveX, y: effectiveY });
+        onChange?.({ x: effectiveX, y: effectiveY });
       }
       oldEffectiveX.current = effectiveX;
       oldEffectiveY.current = effectiveY;
@@ -174,7 +174,7 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
         downRight: effectiveX === 1 && effectiveY === -1 ? 1 : 0,
       });
     } else {
-      onChange({ x: 0, y: 0 });
+      onChange?.({ x: 0, y: 0 });
       api.start({
         x: IDEAL_AREA / 2,
         y: IDEAL_AREA / 2,
@@ -326,7 +326,7 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
           </animated.div>
         </animated.div>
         <animated.div
-          className="pointer-events-none transform rounded-full bg-primary-400"
+          className="bg-primary-400 pointer-events-none transform rounded-full"
           style={{
             x,
             y,

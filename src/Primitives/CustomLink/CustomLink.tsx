@@ -3,7 +3,7 @@ import { AnchorHTMLAttributes, forwardRef } from 'react';
 import NextLink from 'next/link';
 import { clsx } from 'clsx';
 
-interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface CustomLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string;
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
@@ -13,7 +13,7 @@ interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   disabled?: boolean;
 }
 
-const CustomLinkInside = forwardRef<HTMLAnchorElement, Props>(function CustomLink(props, ref) {
+const CustomLinkInside = forwardRef<HTMLAnchorElement, CustomLinkProps>(function CustomLink(props, ref) {
   const { className, children, selected, variant, size, disabled, ...rest } = props;
 
   return (
@@ -51,7 +51,7 @@ const CustomLinkInside = forwardRef<HTMLAnchorElement, Props>(function CustomLin
   );
 });
 
-export const CustomLink = forwardRef<HTMLAnchorElement, Props>(function CustomLink(props, ref) {
+export const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(function CustomLink(props, ref) {
   const { href, ...rest } = props;
   if (href && !href.startsWith('http')) {
     return (

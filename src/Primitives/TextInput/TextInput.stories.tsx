@@ -12,8 +12,4 @@ export default meta;
 
 const Template: ComponentStoryFn<typeof TextInput> = (args) => <TextInput {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
-  placeholder: 'Username',
-  className: 'w-60',
-};
+export const Primary = Template.bind({ placeholder: 'test', className: 'w-60' });

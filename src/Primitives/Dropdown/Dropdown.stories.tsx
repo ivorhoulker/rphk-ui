@@ -21,13 +21,13 @@ const Template: ComponentStoryFn<typeof Dropdown> = (args) => <Dropdown {...args
 
 export const Primary = Template.bind({});
 Primary.args = {
-  selectedId: '1',
+  initialSelectedId: '1',
   data: dropdownData,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  selectedId: '1',
+  initialSelectedId: '1',
   variant: 'secondary',
   data: dropdownData,
 };
