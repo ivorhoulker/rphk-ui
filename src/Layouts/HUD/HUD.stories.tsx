@@ -7,7 +7,7 @@ import { messages } from '../../placeholders/testMessages';
 const meta: Meta<typeof HUD> = {
   component: HUD,
   parameters: {
-    layout: 'centered',
+    layout: 'full',
   },
 };
 export default meta;
@@ -25,6 +25,7 @@ export const SixteenByNine = Template.bind({});
 SixteenByNine.args = {
   messages,
   children: <Video />,
+  mockMessageSubmit: true,
 };
 
 export const SixteenByNineGuides = Template.bind({});
@@ -32,27 +33,29 @@ SixteenByNineGuides.args = {
   messages,
   showLayoutDebug: true,
   children: <Video />,
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
+  mockMessageSubmit: true,
 };
 
 export const NineBySixteen = Template.bind({});
 NineBySixteen.args = {
   messages,
   children: <Video aspect="9/16" />,
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
+  mockMessageSubmit: true,
+};
+
+export const NineBySixteenGuides = Template.bind({});
+NineBySixteenGuides.args = {
+  messages,
+  showLayoutDebug: true,
+  children: <Video aspect="9/16" />,
+  mockMessageSubmit: true,
 };
 
 export const FourByThree = Template.bind({});
 FourByThree.args = {
   messages,
   children: <Video aspect="4/3" />,
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
+  mockMessageSubmit: true,
 };
 
 export const WithGuides = Template.bind({});
@@ -60,9 +63,7 @@ WithGuides.args = {
   messages,
   children: <Video />,
   showLayoutDebug: true,
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
+  mockMessageSubmit: true,
 };
 
 export const Warning = Template.bind({});
@@ -70,7 +71,5 @@ Warning.args = {
   messages,
   children: <Video />,
   warningMessage: 'Warning: leaving safe area.',
-  handleChange: ({ x, y }) => {
-    console.log({ x, y });
-  },
+  mockMessageSubmit: true,
 };

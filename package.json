@@ -19,6 +19,7 @@
     "dist/**"
   ],
   "dependencies": {
+    "@react-hook/resize-observer": "^1.2.6",
     "@react-spring/web": "^9.6.1",
     "@rphk/constants": "*",
     "@use-gesture/react": "^10.2.23",
@@ -55,6 +56,7 @@
     "babel-loader": "^8.3.0",
     "chromatic": "^6.11.4",
     "eslint": "^7.23.0",
+    "eslint-config-custom": "*",
     "eslint-config-next": "^13.0.6",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.31.11",
@@ -69,8 +71,7 @@
     "tsup": "^6.0.1",
     "typescript": "^4.9.3",
     "vite": "^3.2.4",
-    "webpack": "^5.75.0",
-    "eslint-config-custom": "*"
+    "webpack": "^5.75.0"
   },
   "private": true,
   "_id": "@rphk/ui@0.0.0"

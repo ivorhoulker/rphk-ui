@@ -17,9 +17,17 @@ export interface JoypadProps {
   height: number;
   arrowSmallness?: number;
   parentRef: React.RefObject<HTMLDivElement>;
+  className?: string;
 }
 
-export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness = 7, parentRef }: JoypadProps) => {
+export const Joypad = ({
+  showLayoutDebug,
+  onChange,
+  height = 200,
+  arrowSmallness = 7,
+  parentRef,
+  className,
+}: JoypadProps) => {
   const keysUsed = ['w', 'a', 's', 'd', 'UpArrow', 'DownArrow', 'LeftArrow', 'RightArrow'];
   const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
 
@@ -135,7 +143,6 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
   };
 
   const bind = useDrag(({ down, xy: [ox, oy], buttons }) => {
-    console.log({ buttons });
     if (isKeyboardControlling(keyStates.current)) return; // disable joypad drag control if keyboard keys to control movement are held down
     if (down) {
       const newX = Math.min(
@@ -193,7 +200,11 @@ export const Joypad = ({ showLayoutDebug, onChange, height = 200, arrowSmallness
 
   return (
     <>
-      <div className="relative right-0 bottom-0" ref={inputRef} style={{ width: IDEAL_AREA, height: IDEAL_AREA }}>
+      <div
+        className={clsx('relative right-0 bottom-0', !!className && className)}
+        ref={inputRef}
+        style={{ width: IDEAL_AREA, height: IDEAL_AREA }}
+      >
         <animated.div
           className={clsx(
             'absolute top-0 left-0 grid h-full w-full grid-cols-3 grid-rows-3',

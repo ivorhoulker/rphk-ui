@@ -6,7 +6,7 @@ import { Modal } from '.';
 const meta: Meta<typeof Modal> = {
   component: Modal,
   parameters: {
-    layout: 'centered',
+    layout: 'full',
   },
 };
 export default meta;

@@ -32,7 +32,7 @@ export const TextInput = ({
         // required={required}
         name={id}
         className={clsx(
-          'peer block w-full appearance-none bg-transparent py-2.5 px-0 text-sm',
+          'peer block w-full appearance-none bg-transparent py-2.5 px-0 text-xl sm:text-sm',
           'border-0 border-b-2 border-gray-400 dark:border-gray-300',
           'focus:border-primary-500 focus:outline-none focus:ring-0',
 

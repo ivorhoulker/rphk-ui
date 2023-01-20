@@ -18,7 +18,7 @@ Primary.args = {
   onValueChange: (value) => {
     console.log({ value });
   },
-  onValueSubmit: (submitValue) => {
+  onMessageSubmit: (submitValue) => {
     console.log({ submitValue });
   },
 };
