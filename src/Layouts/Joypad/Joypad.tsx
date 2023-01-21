@@ -44,6 +44,7 @@ export const Joypad = ({
   // if alt+tab or click another tab while holding a move key, then reset keys and send 0,0 signal
   const onBlur = () => {
     keyStates.current = {};
+
     onChange?.({ x: 0, y: 0 });
   };
   useEffect(() => {
@@ -51,6 +52,7 @@ export const Joypad = ({
     return () => {
       window.removeEventListener('blur', onBlur);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isKeyboardControlling = (states: Record<string, boolean>) => {
@@ -89,11 +91,11 @@ export const Joypad = ({
     }
   };
 
-  const onKeyup = (event: KeyboardEvent) => {
+  const onKeyup = (event?: KeyboardEvent) => {
     if (activeElementIsInputField()) return;
-    if (keysUsed.includes(event.key)) event.preventDefault();
+    if (event && keysUsed.includes(event.key)) event.preventDefault();
 
-    delete keyStates.current[event.key];
+    if (event) delete keyStates.current[event.key];
     const { x, y } = getXYFromKeyStates(keyStates.current);
     if (x !== oldEffectiveX.current || y !== oldEffectiveY.current) {
       oldEffectiveX.current = x;
@@ -109,7 +111,7 @@ export const Joypad = ({
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyup);
     };
-  }, []);
+  }, [onChange]);
 
   const IDEAL_AREA = Math.min(200, height);
   const THUMB_SIZE = IDEAL_AREA / 5;

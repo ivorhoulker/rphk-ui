@@ -25,6 +25,7 @@ export interface HUDProps {
   messages?: Array<{ id: string; message: string; user: string }>;
   settingsChildren?: ReactNode;
   mockMessageSubmit?: boolean;
+  topLeft?: ReactNode;
 }
 
 export const HUD = ({
@@ -36,6 +37,7 @@ export const HUD = ({
   onEmojiClick,
   onSubmitMessage,
   onLogOut,
+  topLeft,
   messages,
   settingsChildren,
   mockMessageSubmit = false,
@@ -123,10 +125,10 @@ export const HUD = ({
   const ChatBox = () => {
     return (
       <>
-        <ChatView className="w-full z-10" messages={mockMessageSubmit ? mockMessages : messages} />
+        <ChatView className="z-10 w-full" messages={mockMessageSubmit ? mockMessages : messages} />
         <ChatInput
           id="chat"
-          className="pl-2 pb-2 text-black z-10"
+          className="z-10 pl-2 pb-2 text-black"
           placeholder="Press Enter to type..."
           onValueSubmit={handleSubmitMessage}
         />
@@ -139,8 +141,8 @@ export const HUD = ({
       <>
         <div className="relative h-full w-full" ref={inputRef}>
           <div>{children}</div>
-          <div className="absolute top-0 left-0 h-full w-full flex flex-col justify-end items-end">
-            <div className="flex flex-col h-1/3 w-full bg-gradient-to-t from-gray-900 via-transparent to-transparent ">
+          <div className="absolute top-0 left-0 flex h-full w-full flex-col items-end justify-end">
+            <div className="flex h-1/3 w-full flex-col bg-gradient-to-t from-gray-900 via-transparent to-transparent ">
               <ChatBox />
             </div>
           </div>
@@ -157,6 +159,7 @@ export const HUD = ({
               )}
             >
               {showLayoutDebug && 'Stats? Debug console?'}
+              {topLeft && topLeft}
             </div>
 
             <div
@@ -206,7 +209,7 @@ export const HUD = ({
               ref={wrapperRef}
               className={clsx('col-span-5 row-span-2 pb-14', showLayoutDebug && 'bg-green-100 bg-opacity-40')}
             >
-              <div className={clsx('flex h-full w-full justify-end items-end')}>
+              <div className={clsx('flex h-full w-full items-end justify-end')}>
                 <Joypad className="z-20" height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
               </div>
             </div>
@@ -234,6 +237,7 @@ export const HUD = ({
             )}
           >
             {showLayoutDebug && 'Stats? Debug console?'}
+            {topLeft && topLeft}
           </div>
           <div
             className={clsx(
