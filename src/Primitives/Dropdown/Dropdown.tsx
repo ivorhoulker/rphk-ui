@@ -16,6 +16,7 @@ export interface IDropdownProps {
   notSelectedText?: string;
   showIds?: boolean;
   className?: string;
+  overrideSelection?: string;
 }
 
 export function Dropdown({
@@ -27,6 +28,7 @@ export function Dropdown({
   initialSelectedId = '1',
   notSelectedText = 'Not selected',
   showIds = false,
+  overrideSelection,
   className,
 }: IDropdownProps) {
   const [selected, setSelected] = useState(initialSelectedId);
@@ -41,7 +43,9 @@ export function Dropdown({
     buttonRef?.current && resizeObserver.observe(buttonRef?.current);
   }, []);
 
-  const selectedLabel = data?.find((x) => x.id === selected)?.label ?? notSelectedText;
+  const selectedLabel = overrideSelection
+    ? data?.find((x) => x.id === overrideSelection)?.label
+    : data?.find((x) => x.id === selected)?.label ?? notSelectedText;
   const buttonRef = useRef<HTMLDivElement>(null);
   return (
     <div className="relative" ref={outsideClickRef}>

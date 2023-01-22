@@ -1,26 +1,28 @@
-import { VideoHTMLAttributes } from 'react';
+import { VideoHTMLAttributes, forwardRef } from 'react';
 import clsx from 'clsx';
 
-interface Props extends VideoHTMLAttributes<HTMLVideoElement> {
+export interface Props extends VideoHTMLAttributes<HTMLVideoElement> {
   rotate?: '90' | '180' | '-90';
   flipHorizontal?: boolean;
   flipVertical?: boolean;
   aspect?: '16/9' | '4/3' | '9/16' | 'square';
 }
 
-export const Video = ({
-  aspect,
-  flipHorizontal,
-  flipVertical,
-  rotate,
-  className,
-  controls = false,
-  muted = true,
-  autoPlay = true,
-  loop = true,
-  src = '/test_video.webm',
-  ...args
-}: Props) => {
+export const Video = forwardRef<HTMLVideoElement, Props>(function Video(
+  {
+    aspect,
+    flipHorizontal,
+    flipVertical,
+    rotate,
+    className,
+    controls = false,
+    muted = true,
+    autoPlay = true,
+    loop = true,
+    ...args
+  },
+  ref,
+) {
   return (
     <div
       className={clsx(
@@ -33,7 +35,7 @@ export const Video = ({
       )}
     >
       <video
-        src={src}
+        ref={ref}
         className={clsx(
           'h-full w-full grow',
           !rotate && 'object-cover',
@@ -56,4 +58,4 @@ export const Video = ({
       />
     </div>
   );
-};
+});
