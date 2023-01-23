@@ -21,7 +21,7 @@ export function Modal({ children, paragraphs, heading, onClose, buttons }: Props
   const outsideRef = useOutsideClick(onClose);
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 z-30 min-h-full w-full min-w-full overflow-y-auto overflow-x-hidden bg-gray-500 bg-opacity-50 text-gray-900 backdrop-blur-sm dark:text-gray-50">
+    <div className="fixed top-0 left-0 right-0 bottom-0 z-30 min-h-full w-full min-w-full overflow-y-auto overflow-x-hidden bg-gray-500 bg-opacity-50 text-gray-900 dark:text-gray-50">
       <div className="flex h-full w-full min-w-full items-center justify-center">
         <div className="relative z-50 w-full h-full p-3 sm:p-0 sm:h-auto sm:max-w-xl lg:max-w-3xl">
           <div

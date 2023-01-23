@@ -1,9 +1,10 @@
 import { Arrow, ArrowKey } from '../../Primitives/Arrow';
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { SpringValue, animated, useSpring } from '@react-spring/web';
 
 import clsx from 'clsx';
 import { useDrag } from '@use-gesture/react';
+import { string } from 'zod';
 
 //TODO
 export interface JoypadProps {
@@ -117,22 +118,35 @@ export const Joypad = ({
   const THUMB_SIZE = IDEAL_AREA / 5;
   const TWO_THIRDS_AREA = (IDEAL_AREA * 2) / 3;
   const ONE_THIRD_AREA = (IDEAL_AREA * 1) / 3;
-  const [{ x, y, opacity, up, down, left, right, upRight, upLeft, downRight, downLeft }, api] = useSpring(() => ({
-    x: IDEAL_AREA / 2,
-    y: IDEAL_AREA / 2,
-    opacity: 0,
-    up: 0,
-    down: 0,
-    left: 0,
-    right: 0,
-    upRight: 0,
-    upLeft: 0,
-    downRight: 0,
-    downLeft: 0,
-  }));
+  // const [{ x, y, opacity, up, down, left, right, upRight, upLeft, downRight, downLeft }, api] = useSpring(() => ({
+  //   x: IDEAL_AREA / 2,
+  //   y: IDEAL_AREA / 2,
+  //   opacity: 0,
+  //   up: 0,
+  //   down: 0,
+  //   left: 0,
+  //   right: 0,
+  //   upRight: 0,
+  //   upLeft: 0,
+  //   downRight: 0,
+  //   downLeft: 0,
+  // }));
+
+  const [active, setActive] = useState<Record<string, number>>({});
 
   const manualHighlight = ({ x, y }: { x: number; y: number }) => {
-    api.start({
+    // api.start({
+    //   upLeft: x === -1 && y === 1 ? 1 : 0,
+    //   up: x === 0 && y === 1 ? 1 : 0,
+    //   upRight: x === 1 && y === 1 ? 1 : 0,
+    //   left: x === -1 && y === 0 ? 1 : 0,
+    //   right: x === 1 && y === 0 ? 1 : 0,
+    //   downLeft: x === -1 && y === -1 ? 1 : 0,
+    //   down: x === 0 && y === -1 ? 1 : 0,
+    //   downRight: x === 1 && y === -1 ? 1 : 0,
+    // });
+
+    setActive({
       upLeft: x === -1 && y === 1 ? 1 : 0,
       up: x === 0 && y === 1 ? 1 : 0,
       upRight: x === 1 && y === 1 ? 1 : 0,
@@ -166,13 +180,23 @@ export const Joypad = ({
       oldEffectiveX.current = effectiveX;
       oldEffectiveY.current = effectiveY;
 
-      api.start({
-        x: newX,
-        y: newY,
-        immediate: down,
-        opacity: 0.5,
-      });
-      api.start({
+      // api.start({
+      //   x: newX,
+      //   y: newY,
+      //   immediate: down,
+      //   opacity: 0.5,
+      // });
+      // api.start({
+      //   upLeft: effectiveX === -1 && effectiveY === 1 ? 1 : 0,
+      //   up: effectiveX === 0 && effectiveY === 1 ? 1 : 0,
+      //   upRight: effectiveX === 1 && effectiveY === 1 ? 1 : 0,
+      //   left: effectiveX === -1 && effectiveY === 0 ? 1 : 0,
+      //   right: effectiveX === 1 && effectiveY === 0 ? 1 : 0,
+      //   downLeft: effectiveX === -1 && effectiveY === -1 ? 1 : 0,
+      //   down: effectiveX === 0 && effectiveY === -1 ? 1 : 0,
+      //   downRight: effectiveX === 1 && effectiveY === -1 ? 1 : 0,
+      // });
+      setActive({
         upLeft: effectiveX === -1 && effectiveY === 1 ? 1 : 0,
         up: effectiveX === 0 && effectiveY === 1 ? 1 : 0,
         upRight: effectiveX === 1 && effectiveY === 1 ? 1 : 0,
@@ -184,10 +208,20 @@ export const Joypad = ({
       });
     } else {
       onChange?.({ x: 0, y: 0 });
-      api.start({
-        x: IDEAL_AREA / 2,
-        y: IDEAL_AREA / 2,
-        opacity: 0,
+      // api.start({
+      //   x: IDEAL_AREA / 2,
+      //   y: IDEAL_AREA / 2,
+      //   opacity: 0,
+      //   up: 0,
+      //   down: 0,
+      //   left: 0,
+      //   right: 0,
+      //   upRight: 0,
+      //   upLeft: 0,
+      //   downRight: 0,
+      //   downLeft: 0,
+      // });
+      setActive({
         up: 0,
         down: 0,
         left: 0,
@@ -207,171 +241,169 @@ export const Joypad = ({
         ref={inputRef}
         style={{ width: IDEAL_AREA, height: IDEAL_AREA }}
       >
-        <animated.div
+        <div
           className={clsx(
             'absolute top-0 left-0 grid h-full w-full grid-cols-3 grid-rows-3',
             showLayoutDebug && 'bg-red-100 bg-opacity-40',
           )}
           {...bind()}
-          style={{ padding: THUMB_SIZE / 5 }}
+          style={{ padding: THUMB_SIZE / 5, touchAction: 'none' }}
         >
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-center justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.upLeft}
               arrowKey="up-left"
-              activeOpacity={upLeft}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-start justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.up}
               arrowKey="up"
-              activeOpacity={up}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-center justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.upRight}
               arrowKey="up-right"
-              activeOpacity={upRight}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-center justify-start',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.left}
               arrowKey="left"
-              activeOpacity={left}
               style={{ width: IDEAL_AREA / arrowSmallness, height: IDEAL_AREA / arrowSmallness }}
             />
-          </animated.div>
+          </div>
           <div />
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-center justify-end',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.right}
               arrowKey="right"
-              activeOpacity={right}
               style={{ width: IDEAL_AREA / arrowSmallness, height: IDEAL_AREA / arrowSmallness }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-center justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.downLeft}
               arrowKey="down-left"
-              activeOpacity={downLeft}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-end justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.down}
               arrowKey="down"
-              activeOpacity={down}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
+          </div>
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full  items-center justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <ArrowLayers
+              active={!!active.downRight}
               arrowKey="down-right"
-              activeOpacity={downRight}
               style={{
                 width: Math.round(IDEAL_AREA / arrowSmallness),
                 height: Math.round(IDEAL_AREA / arrowSmallness),
               }}
             />
-          </animated.div>
-        </animated.div>
-        <animated.div
-          className="bg-primary-400 pointer-events-none transform rounded-full"
+          </div>
+        </div>
+        {/* <animated.div
+          className="bg-primary-400 pointer-events-none rounded-full"
           style={{
             x,
             y,
-            opacity,
+            opacity: 1,
             translateX: -IDEAL_AREA / 10,
             translateY: -IDEAL_AREA / 10,
             width: THUMB_SIZE,
             height: THUMB_SIZE,
           }}
-        />
+        /> */}
       </div>
     </>
   );
 };
 
-function ArrowLayers({
-  activeOpacity,
-  arrowKey,
-  style,
-}: {
-  activeOpacity: SpringValue<number>;
-  arrowKey: ArrowKey;
-  style?: CSSProperties;
-}) {
+function ArrowLayers({ active, arrowKey, style }: { active: boolean; arrowKey: ArrowKey; style?: CSSProperties }) {
   return (
     <div className="relative" style={style}>
       <div className="absolute top-0 left-0 bottom-0 right-0">
         <Arrow variant={arrowKey} active={false} style={style} />
       </div>
-      <animated.div style={{ opacity: activeOpacity }} className="absolute top-0 left-0 bottom-0 right-0">
+      <div
+        className={clsx(
+          'absolute top-0 left-0 bottom-0 right-0 transition-opacity duration-300',
+          active && 'opacity-100',
+          !active && 'opacity-0',
+        )}
+      >
         <Arrow variant={arrowKey} active={true} style={style} />
-      </animated.div>
+      </div>
     </div>
   );
 }

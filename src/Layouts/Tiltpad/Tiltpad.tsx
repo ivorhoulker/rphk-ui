@@ -1,9 +1,10 @@
 import { Arrow, ArrowKey } from '../../Primitives/Arrow';
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { SpringValue, animated, useSpring } from '@react-spring/web';
 
 import clsx from 'clsx';
 import { useDrag } from '@use-gesture/react';
+import { string } from 'zod';
 
 //TODO
 interface Props {
@@ -86,25 +87,21 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyup);
     };
-  }, []);
+  }, [onChange]);
 
   const IDEAL_AREA = Math.min(200, height);
   const THUMB_SIZE = IDEAL_AREA / 5;
   const TWO_THIRDS_AREA = (IDEAL_AREA * 2) / 3;
   const ONE_THIRD_AREA = (IDEAL_AREA * 1) / 3;
-  const [{ y, opacity, up, down }, api] = useSpring(() => ({
-    y: IDEAL_AREA / 2,
-    opacity: 0,
-    up: 0,
-    down: 0,
-  }));
 
   const manualHighlight = ({ y }: { y: number }) => {
-    api.start({
+    setActive({
       up: y === 1 ? 1 : 0,
       down: y === -1 ? 1 : 0,
     });
   };
+
+  const [active, setActive] = useState<Record<string, number>>();
 
   const bind = useDrag(({ down, xy: [, oy] }) => {
     if (isKeyboardControlling(keyStates.current)) return; // disable joypad drag control if keyboard keys to control movement are held down
@@ -124,21 +121,14 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
 
       oldEffectiveY.current = effectiveY;
 
-      api.start({
-        y: newY,
-        immediate: down,
-        opacity: 0.5,
-      });
-      api.start({
+      setActive({
         up: effectiveY === 1 ? 1 : 0,
 
         down: effectiveY === -1 ? 1 : 0,
       });
     } else {
       onChange?.({ y: 0 });
-      api.start({
-        y: IDEAL_AREA / 2,
-        opacity: 0,
+      setActive({
         up: 0,
         down: 0,
       });
@@ -148,33 +138,34 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
   return (
     <>
       <div className="relative right-0 bottom-0" ref={inputRef} style={{ width: THUMB_SIZE * 1.5, height: IDEAL_AREA }}>
-        <animated.div
+        <div
           className={clsx(
             'absolute top-0 left-0 grid h-full w-full grid-cols-1 grid-rows-3',
             showLayoutDebug && 'bg-red-100 bg-opacity-40',
           )}
+          style={{ touchAction: 'none' }}
           {...bind()}
         >
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-start justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
-            style={{ paddingTop: THUMB_SIZE / 5 }}
+            style={{ paddingTop: THUMB_SIZE / 5, touchAction: 'none' }}
           >
             <ArrowLayers
               arrowKey="up"
-              activeOpacity={up}
+              active={!!active?.up}
               style={{
                 width: IDEAL_AREA / arrowSmallness,
                 height: IDEAL_AREA / arrowSmallness,
               }}
             />
-          </animated.div>
+          </div>
 
           <div />
 
-          <animated.div
+          <div
             className={clsx(
               'flex h-full w-full items-end justify-center',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
@@ -183,47 +174,34 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
           >
             <ArrowLayers
               arrowKey="down"
-              activeOpacity={down}
+              active={!!active?.down}
               style={{
                 width: IDEAL_AREA / arrowSmallness,
                 height: IDEAL_AREA / arrowSmallness,
               }}
             />
-          </animated.div>
-        </animated.div>
-        <animated.div
-          className="bg-primary-400 pointer-events-none transform rounded-full"
-          style={{
-            y,
-            x: THUMB_SIZE / 4,
-            opacity,
-            translateY: -THUMB_SIZE / 2,
-            width: THUMB_SIZE,
-            height: THUMB_SIZE,
-          }}
-        />
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-function ArrowLayers({
-  activeOpacity,
-  arrowKey,
-  style,
-}: {
-  activeOpacity: SpringValue<number>;
-  arrowKey: ArrowKey;
-  style?: CSSProperties;
-}) {
+function ArrowLayers({ active, arrowKey, style }: { active: boolean; arrowKey: ArrowKey; style?: CSSProperties }) {
   return (
     <div className="relative" style={style}>
       <div className="absolute top-0 left-0 bottom-0 right-0">
         <Arrow variant={arrowKey} active={false} style={style} />
       </div>
-      <animated.div style={{ opacity: activeOpacity }} className="absolute top-0 left-0 bottom-0 right-0">
+      <div
+        className={clsx(
+          'absolute top-0 left-0 bottom-0 right-0 transition-opacity duration-300',
+          active && 'opacity-100',
+          !active && 'opacity-0',
+        )}
+      >
         <Arrow variant={arrowKey} active={true} style={style} />
-      </animated.div>
+      </div>
     </div>
   );
 }
