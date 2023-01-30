@@ -35,8 +35,10 @@ export function Modal({ children, paragraphs, heading, onClose, buttons }: Props
 
             {!!paragraphs?.length && (
               <div className="space-y-6 p-6">
-                {paragraphs?.map((para) => (
-                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">{para}</p>
+                {paragraphs?.map((para, idx) => (
+                  <p key={idx} className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    {para}
+                  </p>
                 ))}
               </div>
             )}

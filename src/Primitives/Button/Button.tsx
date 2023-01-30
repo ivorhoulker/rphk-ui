@@ -10,6 +10,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'xs' | 'sm' | 'md' | 'lg';
   disabled?: boolean;
   hotKey?: string;
+  className?: string;
 }
 
 export function Button({
@@ -19,6 +20,7 @@ export function Button({
   variant = 'primary',
   disabled = false,
   hotKey,
+  className,
   ...args
 }: Props) {
   const activeElementIsInputField = () => {
@@ -92,6 +94,7 @@ export function Button({
         variant === 'outline' &&
           !disabled &&
           'hover:bg-opacity-70 hover:text-gray-900 focus-visible:ring-primary-300 active:bg-gray-200 dark:border-gray-400 dark:text-gray-300 dark:hover:bg-opacity-70 dark:hover:text-white dark:focus-visible:ring-gray-600 dark:active:bg-gray-500',
+        !!className && className,
       )}
       type={type}
     >

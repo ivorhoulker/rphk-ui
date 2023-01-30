@@ -3,8 +3,8 @@ import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { SpringValue, animated, useSpring } from '@react-spring/web';
 
 import clsx from 'clsx';
-import { useDrag } from '@use-gesture/react';
 import { string } from 'zod';
+import { useDrag } from '@use-gesture/react';
 
 //TODO
 interface Props {
@@ -15,13 +15,14 @@ interface Props {
   manualY?: number;
   keyStates?: Record<string, boolean>;
   onChange?: ({ y }: { y: number }) => void;
+  onTiltReset?: () => void;
   height: number;
   arrowSmallness?: number;
   parentRef: React.RefObject<HTMLDivElement>;
 }
 
-export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7, parentRef }: Props) => {
-  const keysUsed = ['r', 'f'];
+export const Tiltpad = ({ showLayoutDebug, onChange, onTiltReset, height, arrowSmallness = 7, parentRef }: Props) => {
+  const keysUsed = ['r', 'f', 'c'];
   const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
 
   const keyStates = useRef<Record<string, boolean>>({});
@@ -38,6 +39,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
     return () => {
       window.removeEventListener('blur', onBlur);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const activeElementIsInputField = () => {
@@ -66,6 +68,10 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
       onChange?.({ y });
       manualHighlight({ y });
     }
+    //single trigger
+    if (event.key === 'c') {
+      onTiltReset?.();
+    }
   };
 
   const onKeyup = (event: KeyboardEvent) => {
@@ -87,6 +93,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, height, arrowSmallness = 7,
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyup);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChange]);
 
   const IDEAL_AREA = Math.min(200, height);

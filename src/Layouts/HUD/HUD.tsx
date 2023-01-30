@@ -19,6 +19,7 @@ export interface HUDProps {
   warningMessage?: string;
   onXYChange?: ({ x, y }: { x: number; y: number }) => void;
   onTiltChange?: ({ y }: { y: number }) => void;
+  onTiltReset?: () => void;
   onEmojiClick?: (emojiName: string) => void;
   onSubmitMessage?: (messageText: string) => void;
   onLogOut?: () => Promise<void>;
@@ -37,6 +38,7 @@ export const HUD = ({
   onEmojiClick,
   onSubmitMessage,
   onLogOut,
+  onTiltReset,
   topLeft,
   messages,
   settingsChildren,
@@ -180,7 +182,12 @@ export const HUD = ({
                 showLayoutDebug && 'bg-green-100 bg-opacity-40',
               )}
             >
-              <Tiltpad height={wrapperHeight || 110} onChange={onTiltChange} parentRef={inputRef} />
+              <Tiltpad
+                height={wrapperHeight || 110}
+                onTiltReset={onTiltReset}
+                onChange={onTiltChange}
+                parentRef={inputRef}
+              />
             </div>
             <div
               className={clsx(
@@ -304,7 +311,12 @@ export const HUD = ({
           >
             <div className={clsx('flex h-full w-full items-end justify-end')}>
               <Joypad height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
-              <Tiltpad height={wrapperHeight || 110} onChange={onTiltChange} parentRef={inputRef} />
+              <Tiltpad
+                height={wrapperHeight || 110}
+                onTiltReset={onTiltReset}
+                onChange={onTiltChange}
+                parentRef={inputRef}
+              />
             </div>
           </div>
         </div>
