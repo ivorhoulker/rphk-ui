@@ -9,7 +9,7 @@
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "storybook": "start-storybook",
     "build:storybook": "build-storybook",
-    "dev:ui": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
     "dev:storybook": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn dev:ui\" \"yarn storybook\"",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",

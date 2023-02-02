@@ -44,7 +44,7 @@ export const Tiltpad = ({ showLayoutDebug, onChange, onTiltReset, height, arrowS
 
   const activeElementIsInputField = () => {
     const activeElement = document?.activeElement;
-    return activeElement && ignoreIfActiveElementIsOneOf.indexOf(activeElement.tagName.toLowerCase()) !== -1;
+    return !!(activeElement && ignoreIfActiveElementIsOneOf.includes(activeElement.tagName.toLowerCase()));
   };
 
   const isKeyboardControlling = (states: Record<string, boolean>) => {

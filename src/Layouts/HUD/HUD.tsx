@@ -10,7 +10,6 @@ import { TextInput } from '../../Primitives/TextInput';
 import { Tiltpad } from '../Tiltpad';
 import clsx from 'clsx';
 import { useSize } from '../../hooks/useSize';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 //TODO
 export interface HUDProps {
@@ -27,6 +26,7 @@ export interface HUDProps {
   settingsChildren?: ReactNode;
   mockMessageSubmit?: boolean;
   topLeft?: ReactNode;
+  bottomLeft?: ReactNode;
 }
 
 export const HUD = ({
@@ -40,6 +40,7 @@ export const HUD = ({
   onLogOut,
   onTiltReset,
   topLeft,
+  bottomLeft,
   messages,
   settingsChildren,
   mockMessageSubmit = false,
@@ -48,10 +49,10 @@ export const HUD = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
   // const [wrapperHeight, setWrapperHeight] = useState<number>();
-  const { isPortrait } = useWindowDimensions();
+  // const { isPortrait } = useWindowDimensions();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mockMessages, setMockMessages] = useState(messages);
-  const { height: wrapperHeight } = useSize(wrapperRef);
+  // const { height: wrapperHeight } = useSize(wrapperRef);
 
   const handleSubmitMessage = (v: string) => {
     onSubmitMessage?.(v);
@@ -138,94 +139,94 @@ export const HUD = ({
     );
   };
 
-  if (isPortrait) {
-    return (
-      <>
-        <div className="relative h-full w-full" ref={inputRef}>
-          <div>{children}</div>
-          <div className="absolute top-0 left-0 flex h-full w-full flex-col items-end justify-end">
-            <div className="flex h-1/3 w-full flex-col bg-gradient-to-t from-gray-900 via-transparent to-transparent ">
-              <ChatBox />
-            </div>
-          </div>
-          <div
-            className={clsx(
-              'absolute top-0 left-0 grid h-full w-full grid-cols-5 grid-rows-5 gap-1',
-              showLayoutDebug && 'bg-red-100 bg-opacity-40',
-            )}
-          >
-            <div
-              className={clsx(
-                'col-span-3 row-span-1 flex items-start justify-start',
-                showLayoutDebug && 'bg-green-100 bg-opacity-40',
-              )}
-            >
-              {showLayoutDebug && 'Stats? Debug console?'}
-              {topLeft && topLeft}
-            </div>
+  // if (isPortrait) {
+  //   return (
+  //     <>
+  //       <div className="relative h-full w-full" ref={inputRef}>
+  //         <div>{children}</div>
+  //         <div className="absolute top-0 left-0 flex h-full w-full flex-col items-end justify-end">
+  //           <div className="flex h-1/3 w-full flex-col bg-gradient-to-t from-gray-900 via-transparent to-transparent ">
+  //             <ChatBox />
+  //           </div>
+  //         </div>
+  //         <div
+  //           className={clsx(
+  //             'absolute top-0 left-0 grid h-full w-full grid-cols-5 grid-rows-5 gap-1',
+  //             showLayoutDebug && 'bg-red-100 bg-opacity-40',
+  //           )}
+  //         >
+  //           <div
+  //             className={clsx(
+  //               'col-span-3 row-span-1 flex items-start justify-start',
+  //               showLayoutDebug && 'bg-green-100 bg-opacity-40',
+  //             )}
+  //           >
+  //             {showLayoutDebug && 'Stats? Debug console?'}
+  //             {topLeft && topLeft}
+  //           </div>
 
-            <div
-              className={clsx(
-                'col-span-2 row-span-1 flex items-start justify-end',
-                showLayoutDebug && 'bg-green-100 bg-opacity-40',
-              )}
-            >
-              <div className="p-1">
-                <SettingsButton />
-              </div>
-            </div>
+  //           <div
+  //             className={clsx(
+  //               'col-span-2 row-span-1 flex items-start justify-end',
+  //               showLayoutDebug && 'bg-green-100 bg-opacity-40',
+  //             )}
+  //           >
+  //             <div className="p-1">
+  //               <SettingsButton />
+  //             </div>
+  //           </div>
 
-            <div
-              ref={tiltRef}
-              className={clsx(
-                'col-span-1 row-span-2 flex items-center justify-start',
-                showLayoutDebug && 'bg-green-100 bg-opacity-40',
-              )}
-            >
-              <Tiltpad
-                height={wrapperHeight || 110}
-                onTiltReset={onTiltReset}
-                onChange={onTiltChange}
-                parentRef={inputRef}
-              />
-            </div>
-            <div
-              className={clsx(
-                'col-span-3 row-span-2 flex items-center justify-center',
-                showLayoutDebug && 'bg-green-100 bg-opacity-40',
-              )}
-            >
-              {!!warningMessage ||
-                (showLayoutDebug && (
-                  <NotificationText variant="warning" size="lg">
-                    {warningMessage || showLayoutDebug ? 'Warning' : ''}
-                  </NotificationText>
-                ))}
-            </div>
-            <div
-              id="emoji"
-              className={clsx(
-                'col-span-1 row-span-2 flex flex-col items-end justify-center gap-1 pr-1',
-                showLayoutDebug && 'bg-green-100 bg-opacity-40',
-              )}
-            >
-              <EmojiButtons emojiClass="text-lg" />
-            </div>
+  //           <div
+  //             ref={tiltRef}
+  //             className={clsx(
+  //               'col-span-1 row-span-2 flex items-center justify-start',
+  //               showLayoutDebug && 'bg-green-100 bg-opacity-40',
+  //             )}
+  //           >
+  //             {/* <Tiltpad
+  //               height={wrapperHeight || 110}
+  //               onTiltReset={onTiltReset}
+  //               onChange={onTiltChange}
+  //               parentRef={inputRef}
+  //             /> */}
+  //           </div>
+  //           <div
+  //             className={clsx(
+  //               'col-span-3 row-span-2 flex items-center justify-center',
+  //               showLayoutDebug && 'bg-green-100 bg-opacity-40',
+  //             )}
+  //           >
+  //             {!!warningMessage ||
+  //               (showLayoutDebug && (
+  //                 <NotificationText variant="warning" size="lg">
+  //                   {warningMessage || showLayoutDebug ? 'Warning' : ''}
+  //                 </NotificationText>
+  //               ))}
+  //           </div>
+  //           <div
+  //             id="emoji"
+  //             className={clsx(
+  //               'col-span-1 row-span-2 flex flex-col items-end justify-center gap-1 pr-1',
+  //               showLayoutDebug && 'bg-green-100 bg-opacity-40',
+  //             )}
+  //           >
+  //             <EmojiButtons emojiClass="text-lg" />
+  //           </div>
 
-            <div
-              ref={wrapperRef}
-              className={clsx('col-span-5 row-span-2 pb-14', showLayoutDebug && 'bg-green-100 bg-opacity-40')}
-            >
-              <div className={clsx('flex h-full w-full items-end justify-end')}>
-                <Joypad className="z-20" height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <SettingsModal />
-      </>
-    );
-  }
+  //           <div
+  //             ref={wrapperRef}
+  //             className={clsx('col-span-5 row-span-2 pb-14', showLayoutDebug && 'bg-green-100 bg-opacity-40')}
+  //           >
+  //             {/* <div className={clsx('flex h-full w-full items-end justify-end')}>
+  //               <Joypad className="z-20" height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
+  //             </div> */}
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <SettingsModal />
+  //     </>
+  //   );
+  // }
   return (
     <>
       <div className="relative h-full max-h-screen w-full overflow-hidden" ref={inputRef}>
@@ -290,9 +291,7 @@ export const HUD = ({
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
-            <div className="flex max-h-full w-full flex-col">
-              <ChatBox />
-            </div>
+            <div className="flex max-h-full w-full flex-col">{bottomLeft && bottomLeft}</div>
           </div>
           <div
             className={clsx(
@@ -303,20 +302,15 @@ export const HUD = ({
             <EmojiButtons />
           </div>
           <div
-            ref={wrapperRef}
+            // ref={wrapperRef}
             className={clsx(
               'col-span-2 row-span-2 p-2 opacity-50 transition-opacity duration-300 hover:opacity-90',
               showLayoutDebug && 'bg-green-100 bg-opacity-40',
             )}
           >
             <div className={clsx('flex h-full w-full items-end justify-end')}>
-              <Joypad height={wrapperHeight || 110} onChange={onXYChange} parentRef={inputRef} />
-              <Tiltpad
-                height={wrapperHeight || 110}
-                onTiltReset={onTiltReset}
-                onChange={onTiltChange}
-                parentRef={inputRef}
-              />
+              <Joypad height={400} onChange={onXYChange} parentRef={inputRef} />
+              <Tiltpad height={400} onTiltReset={onTiltReset} onChange={onTiltChange} parentRef={inputRef} />
             </div>
           </div>
         </div>

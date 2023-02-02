@@ -3,8 +3,8 @@ import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { SpringValue, animated, useSpring } from '@react-spring/web';
 
 import clsx from 'clsx';
-import { useDrag } from '@use-gesture/react';
 import { string } from 'zod';
+import { useDrag } from '@use-gesture/react';
 
 //TODO
 export interface JoypadProps {
@@ -112,6 +112,7 @@ export const Joypad = ({
       document.removeEventListener('keydown', onKeydown);
       document.removeEventListener('keyup', onKeyup);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onChange]);
 
   const IDEAL_AREA = Math.min(200, height);

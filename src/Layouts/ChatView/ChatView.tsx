@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { forwardRef, useLayoutEffect, useRef } from 'react';
 
 import clsx from 'clsx';
 
@@ -8,11 +8,14 @@ export interface ChatViewProps {
   messages?: Array<{ id: string; message: string; user: string }>;
 }
 
-export const ChatView = ({ messages, className }: ChatViewProps) => {
-  const scrollViewRef = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    scrollViewRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-  }, [messages]);
+export const ChatView = forwardRef<HTMLDivElement, ChatViewProps>(function ChatView(
+  { messages, className }: ChatViewProps,
+  ref,
+) {
+  // const scrollViewRef = useRef<HTMLDivElement>(null);
+  // useLayoutEffect(() => {
+  //   scrollViewRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  // }, [messages]);
   return (
     <div
       dir={'rtl'}
@@ -27,7 +30,7 @@ export const ChatView = ({ messages, className }: ChatViewProps) => {
           <span>{x.message}</span>
         </div>
       ))}
-      <div ref={scrollViewRef}></div>
+      <div ref={ref}></div>
     </div>
   );
-};
+});
