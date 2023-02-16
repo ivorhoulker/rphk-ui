@@ -69,6 +69,7 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
     return () => {
       document.removeEventListener('keydown', onKeydown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -83,8 +84,8 @@ export const ChatInput = ({ className, id = 'Chat', placeholder, onValueChange, 
           value={value}
           onChange={handleChange}
           className={clsx(
-            'peer block w-full appearance-none bg-transparent py-2.5 px-0 text-xl sm:text-md',
-            'border-0 dark:text-white text-white',
+            'sm:text-md peer block w-full appearance-none bg-transparent py-2.5 px-0 text-xl',
+            'border-0 text-white dark:text-white',
             'opacity-100 focus:outline-none focus:ring-0',
             !!className && className,
           )}

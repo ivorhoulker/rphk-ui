@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
+import NextLink from 'next/link';
 import clsx from 'clsx';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -11,18 +12,20 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   hotKey?: string;
   className?: string;
+  href?: string;
 }
 
-export function Button({
-  children,
-  type = 'button',
-  size = 'md',
-  variant = 'primary',
-  disabled = false,
-  hotKey,
-  className,
-  ...args
-}: Props) {
+export const Button = forwardRef<HTMLButtonElement, Props>(function Button(props, ref) {
+  const {
+    children,
+    type = 'button',
+    size = 'md',
+    variant = 'primary',
+    disabled = false,
+    hotKey,
+    className,
+    ...args
+  } = props;
   const activeElementIsInputField = () => {
     const ignoreIfActiveElementIsOneOf = ['input', 'textarea']; //'select', 'button', might be added if we were using e.g. enter key
     const activeElement = document?.activeElement;
@@ -102,4 +105,24 @@ export function Button({
       {children}
     </button>
   );
-}
+});
+
+export const CustomButton = forwardRef<HTMLButtonElement, Props>(function CustomButton(props, ref) {
+  const { href, children, ...rest } = props;
+  if (href) {
+    return (
+      <>
+        <NextLink passHref href={href}>
+          <Button ref={ref} {...rest}>
+            {children}
+          </Button>
+        </NextLink>
+      </>
+    );
+  }
+  return (
+    <Button ref={ref} {...rest}>
+      {children}
+    </Button>
+  );
+});

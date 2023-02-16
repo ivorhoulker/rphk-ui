@@ -8,7 +8,7 @@ export const Header = ({ className, children }: HeaderProps) => {
   return (
     <h1
       className={clsx(
-        'mb-4 w-full text-center text-6xl sm:text-8xl font-extrabold text-gray-900 dark:text-white max-w-screen',
+        'mb-4 w-full text-center text-9xl sm:text-8xl font-extrabold text-gray-900 dark:text-white max-w-screen',
         !!className && className,
       )}
     >
